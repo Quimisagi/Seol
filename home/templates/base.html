@@ -60,13 +60,7 @@
                {% endif %}
                <div class="navbar-right">
                    <ul class="nav navbar-nav">
-                       <!-- Messages: style can be found in dropdown.less-->
-
-                       <!-- Notifications: style can be found in dropdown.less -->
-
-                       <!-- Tasks: style can be found in dropdown.less -->
-
-                       <!-- User Account: style can be found in dropdown.less -->
+                       
                        {% if user.is_authenticated %}
 
                        {% else %}
@@ -96,10 +90,10 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="{% static 'img/avatar3.png' %}" class="img-circle" alt="User Image" />
+                            <img src="{{ user.perfil.imagen.url }}" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Hola Cris</p>
+                            <p>Hola {{ user.nombres }}</p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
