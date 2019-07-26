@@ -19,12 +19,14 @@ from django.urls import path, include
 from usuarios import views as usuario_views
 from django.conf import settings
 from django.conf.urls.static import static
+from usuarios.views import PostDeleteView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', usuario_views.register, name='register'),
     path('profile/', usuario_views.profile, name='profile'),
+    path('profile/<int:pk>/delete/', PostDeleteView.as_view(), name='delete_user'),
     path('login/', auth_views.LoginView.as_view(template_name='home/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='home/logout.html'), name='logout'),
     path('', include('home.urls')),
