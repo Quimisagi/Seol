@@ -11,30 +11,37 @@
     </style>
 {% endblock %}
 
-<div class="content-section">
-    <div class="header">Crear Categoria</div>
+<div class="form-box", style="width: 80%!important;margin: 15px auto 0 auto!important ">
+    <div class="header">
+        <h1 class="text-center">Crear Categoria</h1>
+    </div>
     <form action="{% url 'agregar_categoria' %}" method="POST">
         {% csrf_token %}
-        {% bootstrap_form form %}
-        <hr>
-        {{ formset.media }}
-        {{ formset.management_form }}
-        {% for form2 in formset %}
-            <div class="individual-form">
-                {% for hidden in form.hidden_fields %} 
-                    {{ hidden }}
-                {% endfor %}
-                {% bootstrap_form form2 %}
-                
+        <div class="body bg-gray">
+            {% bootstrap_form form %}
+            <hr>
+            <h3>Crear subcategorias</h3>
+            {{ formset.media }}
+            {{ formset.management_form }}
+            {% for form2 in formset %}
+                <div class="individual-form">
+                    {% for hidden in form.hidden_fields %} 
+                        {{ hidden }}
+                    {% endfor %}
+                    {% bootstrap_form form2 %}
+                    
+                </div>
+            {% endfor %}
+            <div class="pull-right add-subcategory"></div>
+            
+            <div class="footer">                    
+    
+                <button type="submit" class="btn bg-olive btn-block">Crear</button>
+    
             </div>
-        {% endfor %}
-        <div class="pull-right add-subcategory"></div>
-        
-        <div class="footer">                    
-
-            <button type="submit" class="btn bg-olive btn-block">Crear</button>
 
         </div>
+        
     </form>
 </div>
     

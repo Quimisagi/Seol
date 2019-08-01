@@ -189,7 +189,11 @@
             {% endif %}
 
            {% endif %}
-           <aside class="right-side">
+           {% if user.is_authenticated %}
+                <aside class="right-side">
+            {% else %}
+                <aside class="right-side strech">
+            {% endif %}
                <br>
                 {% if messages %}
                     {% for message in messages %}

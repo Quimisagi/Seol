@@ -87,7 +87,7 @@ def categoryList(request):
 
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Producto
-    success_url = '/producto/lista/'
+    success_url = '/producto/lista'
 
     def test_func(self, *args, **kwargs):
         producto = get_object_or_404(Producto, pk=self.kwargs['pk'])
