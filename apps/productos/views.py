@@ -105,9 +105,14 @@ class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self, *args, **kwargs):
         categoria = get_object_or_404(Categoria, pk=self.kwargs['pk'])
+        cat_id = categoria.id
+        subcategorias = Subcategoria.objects.filter(categoria_id=cat_id)
         if self.request.method == 'POST':
             categoria.estado = False
             categoria.save()
+            for sc in subcategorias:
+                sc.estado = False
+                sc.save()
             messages.success(self.request, 'Categoria eliminada!')
             return redirect('lista_categoria')
         else:
