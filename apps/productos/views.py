@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import ProductCreateForm,CategoriaCreateForm,SubcategoriaCreateForm, DetalleCreateForm, ProductUpdateForm, CategoryUpdateForm, SubcategoryUpdateForm
+from .forms import ProductCreateForm,CategoriaCreateForm,SubcategoriaCreateForm, ProductUpdateForm, CategoryUpdateForm, SubcategoryUpdateForm,DetailCreateForm
 from .models import Categoria, Subcategoria, Producto, Detalle
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import DeleteView
@@ -10,16 +10,25 @@ from django.forms import modelformset_factory
 def productRegister(request):
     if request.method == 'POST':
         form = ProductCreateForm(request.POST, request.FILES)
-        if form.is_valid():
+        form2 = DetailCreateForm(request.POST)
+
+        if form.is_valid() and form2.is_valid():
             form.save()
+            if form2.is_valid():
+                nom_pro = form.cleaned_data.get('nombre')
+                producto = Producto.objects.filter(nombre=nom_pro).first()
+                detalle = form2.save(commit=False)
+                detalle.producto = producto
+                detalle.save()
             messages.success(request, 'Producto agregado!')
             return redirect('home')
         else:
             messages.error(request, 'Error!')
-            return render(request, 'productos/registrar-producto.html', {'form': form})
+            return render(request, 'productos/registrar-producto.html', {'form': form, 'form2': form2})
     else:
         form = ProductCreateForm()
-    return render(request, 'productos/registrar-producto.html', {'form': form})
+        form2 = DetailCreateForm()
+    return render(request, 'productos/registrar-producto.html', {'form': form, 'form2': form2})
 
 def menuProductos(request):
     return render(request, 'productos/menu-productos.html', {})

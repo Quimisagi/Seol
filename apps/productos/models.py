@@ -45,9 +45,13 @@ class Detalle(models.Model):
 
 
 class Detalle_Producto(models.Model):
-    detalle = models.ForeignKey(Detalle, on_delete=models.CASCADE)
+    peso = models.CharField(max_length=50)
+    color = models.CharField(max_length=50)
+    garantia = models.CharField(max_length=50)
+    tamano = models.CharField(max_length=50)
+    densidad = models.CharField(max_length=50)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    descripcion = models.TextField()
+
 
 
 class Descuento_Producto(models.Model):
