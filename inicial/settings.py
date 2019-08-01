@@ -14,14 +14,27 @@ import os
 import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+with open("%s/secrets.json" % (BASE_DIR)) as f:
+    secrets = json.loads(f.read())
+
+
+def get_secret(setting, secrets=secrets):
+    """Get the secret variable or return explicit exception."""
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {0} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gt^9g4m8x(!v7i$+k8881@yj3du*-lj8@db5za$*zmt=zc7fhr'
+SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,10 +53,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'dynamic_formsets',
     'bootstrap4',
 
-    'home',
-    'usuarios',
+    'apps.home',
+    'apps.usuarios',
+    'apps.productos',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +76,7 @@ ROOT_URLCONF = 'Seol.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,14 +95,21 @@ WSGI_APPLICATION = 'Seol.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+DATABASES_NAME = get_secret("DATABASES_NAME")
+DATABASES_USER = get_secret("DATABASES_USER")
+DATABASES_PASSWORD = get_secret("DATABASES_PASSWORD")
+DATABASES_HOST = get_secret("DATABASES_HOST")
+DATABASES_PORT = get_secret("DATABASES_PORT")
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Seol',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': DATABASES_NAME,
+        'USER': DATABASES_USER,
+        'PASSWORD': DATABASES_PASSWORD,
+        'HOST': DATABASES_HOST,
+        'PORT': DATABASES_PORT,
     }
 }
 
@@ -114,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalizationaccounts
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
@@ -129,6 +151,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static_collected')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -138,3 +162,4 @@ AUTH_PROFILE_MODULE = 'usuarios.Perfil'
 
 LOGIN_REDIRECT_URL = 'home'
 #LOGIN_URL = 'login'
+

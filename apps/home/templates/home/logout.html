@@ -1,5 +1,4 @@
 {% load static %}
-{% load bootstrap4 %}
 <!DOCTYPE html>
 <html class="bg-black">
     <head>
@@ -23,31 +22,17 @@
     <body class="bg-black">
 
         <div class="form-box" id="login-box">
-            <div class="header">Sign In</div>
-            <form action="{% url 'login' %}" method="POST">
-                {% csrf_token %}
-                <div class="body bg-gray">
-                    {% bootstrap_form form %}
-                </div>
-                <div class="footer">                                                               
-                    <button type="submit" class="btn bg-olive btn-block">Sign me in</button>  
-                    
-                    <p><a href="#">I forgot my password</a></p>
-                    
-                    <a href="{% url 'register' %}" class="text-center">Register a new membership</a>
-                </div>
-            </form>
-
-            <div class="margin text-center">
-                <span>Sign in using social networks</span>
-                <br/>
-                <button class="btn bg-light-blue btn-circle"><i class="fa fa-facebook"></i></button>
-                <button class="btn bg-aqua btn-circle"><i class="fa fa-twitter"></i></button>
-                <button class="btn bg-red btn-circle"><i class="fa fa-google-plus"></i></button>
-
-            </div>
-        </div>
-
+            <div class="header">Cerraste sesión!</div>
+            <div class="body bg-gray">
+                <a href="{% url 'login' %}" class="text-center">
+                    <i class="fa fa-sign-in"></i>   <span>Vuelve a iniciar sesión</span>
+                </a>
+                <br>
+                <a href="{% url 'home' %}" class="text-center">
+                    <i class="fa fa-home"></i>   <span>Volver a Home</span>
+                </a>       
+            </div>    
+        </div>    
 
         <!-- jQuery 2.0.2 -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>

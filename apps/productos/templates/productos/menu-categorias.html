@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+<section class="content-header">
+        <h1 class="text-center">MENU CATEGORIAS</h1>
+        <br>
+        <br>
+</section>
+    <div class="row">
+        <div class="col-lg-6 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green" onclick="window.location.assign('/categoria/agregar')">
+                        <div class="inner">
+                                <h3 class="text-center">
+                                    AGREGAR 
+                                </h3>
+                                <p class="text-green">
+                                    awdawdawd
+                                </p>
+                                <p class="text-green">
+                                        awdawdawd
+                                </p>
+                            </div>
+                   
+                    <div class="icon">
+                        <i class="ion ion-plus-circled"></i>
+                    </div>
+                </div>
+        </div>
+
+
+    <div class="row">
+        <div class="col-lg-6 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow" onclick="window.location.assign('/categoria/lista')">
+                        <div class="inner">
+                                <h3 class="text-center">
+                                    MODIFICAR
+                                </h3>
+                                <p class="text-yellow">
+                                    awdawdawd
+                                </p>
+                                <p class="text-yellow">
+                                        awdawdawd
+                                </p>
+                            </div>
+                    
+                    <div class="icon">
+                        <i class="ion ion-edit"></i>
+                    </div>
+                    
+                </div>
+        </div>
+    
+    </div>
+
+{% endblock content %}

@@ -11,3 +11,6 @@ media
 .idea/*
 .vscode/*
 
+Seol/settings.py
+secrets.json
+

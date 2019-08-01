@@ -23,7 +23,11 @@
     <body class="bg-black">
 
         <div class="form-box" id="login-box">
+            <div class="pull-right box-tools" >
+                <a class="btn" href="{%url 'home'%}" style="color: black">X</a>
+            </div>
             <div class="header">Registrate!</div>
+            
             <form action="{% url 'register' %}" method="POST">
                 {% csrf_token %}
                 <div class="body bg-gray">

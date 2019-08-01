@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html style="min-height: 3878px;">
+  <head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Seol | Home</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- bootstrap 3.0.2 -->
+        <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet" type="text/css">
+        <!-- font Awesome -->
+        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+        <!-- Ionicons -->
+        <link href="{% static 'css/ionicons.min.css'%}" rel="stylesheet" type="text/css">
+        <!-- Morris chart -->
+        <link href="{% static 'css/morris/morris.css' %}" rel="stylesheet" type="text/css">
+        <!-- jvectormap -->
+        <link href="{% static 'css/jvectormap/jquery-jvectormap-1.2.2.css' %}" rel="stylesheet" type="text/css">
+        <!-- fullCalendar -->
+        <link href="{% static 'css/fullcalendar/fullcalendar.css' %}" rel="stylesheet" type="text/css">
+        <!-- Daterange picker -->
+        <link href="{% static 'css/daterangepicker/daterangepicker-bs3.css' %}" rel="stylesheet" type="text/css">
+        <!-- bootstrap wysihtml5 - text editor -->
+        <link href="{% static 'css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' %}" rel="stylesheet" type="text/css">
+        <!-- Theme style -->
+        <link href="{% static 'css/AdminLTE.css' %}" rel="stylesheet" type="text/css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+        {% block css %}
+        {% endblock %}
+    <style type="text/css">.jqstooltip { position: absolute;left: 0px;top: 0px;visibility: hidden;background: rgb(0, 0, 0) transparent;background-color: rgba(0,0,0,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";color: white;font: 10px arial, san serif;text-align: left;white-space: nowrap;padding: 5px;border: 1px solid white;z-index: 10000;}.jqsfield { color: white;font: 10px arial, san serif;text-align: left;}</style></head>
+  </head>
+  <body class="skin-black">
+    <header class="header">
+            <a href="{% url 'home' %}" class="logo">
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                <!--<img src="static/img/logo.png" alt="" width="200" height="50" > -->
+                Seol
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+               <!-- Sidebar toggle button-->
+               {% if user.is_authenticated %}
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+               {% else %}
+                <a href="#" class="navbar-btn sidebar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+               {% endif %}
+               <div class="navbar-right">
+                   <ul class="nav navbar-nav">
+                       
+                       {% if user.is_authenticated %}
+
+                       {% else %}
+                        <li>
+                                <a class="nav-item nav-link" href="{% url 'login' %}">
+                                    <i class="glyphicon glyphicon-log-in"></i>
+                                    <span>Login</span>
+                                </a>
+                        </li>
+                        <li>
+                            <a class="nav-item nav-link" href="{% url 'register' %}">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>Registrarse</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                   </ul>
+               </div>
+           </nav>
+    </header>
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+           <!-- Left side column. contains the logo and sidebar -->
+           {% if user.is_authenticated %}
+            {% if user.es_admin == False%}
+                <aside class="left-side sidebar-offcanvas">
+                    <!-- sidebar: style can be found in sidebar.less -->
+                    <section class="sidebar">
+                        <!-- Sidebar user panel -->
+                        <div class="user-panel">
+                            <div class="pull-left image">
+                                <img src="{{ user.perfil.imagen.url }}" class="img-circle" alt="User Image" />
+                            </div>
+                            <div class="pull-left info">
+                                <p>Hola {{ user.nombres }}</p>
+
+                                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            </div>-
+                        </div>
+                        <!-- search form -->
+
+                        <!-- /.search form -->
+                        <!-- sidebar menu: : style can be found in sidebar.less -->
+                        <ul class="sidebar-menu">
+                            <li class="active">
+                                <a href="{% url 'profile' %}">
+                                    <i class="fa fa-user"></i>Perfil<span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-list-alt"></i> <span>Historial de compras</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-shopping-cart"></i> <span>Carrito de compras</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-tags"></i> <span>Articulos en descuento</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}">
+                                    <i class="fa  fa-power-off"></i> <span>Cerrar sesión</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+                    <!-- /.sidebar -->
+                </aside>
+            {% else %}
+                <aside class="left-side sidebar-offcanvas">
+                    <!-- sidebar: style can be found in sidebar.less -->
+                    <section class="sidebar">
+                        <!-- Sidebar user panel -->
+                        <div class="user-panel">
+                            <div class="pull-left image">
+                                <img src="{{ user.perfil.imagen.url }}" class="img-circle" alt="User Image" />
+                            </div>
+                            <div class="pull-left info">
+                                <p>Hola {{ user.nombres }}</p>
+    
+                                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            </div>
+                        </div>
+                        <!-- search form -->
+    
+                        <!-- /.search form -->
+                        <!-- sidebar menu: : style can be found in sidebar.less -->
+                        <ul class="sidebar-menu">
+                            <li class="active">
+                                <a href="{% url 'profile' %}">
+                                    <i class="fa fa-user"></i>Perfil<span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-users"></i> <span>Usuarios registrados</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'menu_categoria'%}">
+                                    <i class="fa fa-tags"></i> <span>Categorias y Subcategorias</span>
+                                    
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'menu_producto'%}">
+                                    <i class="fa fa-barcode"></i> <span>Productos</span>
+                                    
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}">
+                                    <i class="fa  fa-power-off"></i> <span>Cerrar sesión</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+                    <!-- /.sidebar -->
+                </aside>
+            {% endif %}
+
+           {% endif %}
+           <aside class="right-side">
+               <br>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                   
+                
+                <!-- Content Header (Page header) -->
+
+                <!-- Main content -->
+                <section class="content">
+                  {% block content %}
+                  {% endblock %}
+
+
+                    <!-- /.row -->
+
+                    <!-- Main row -->
+
+
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+</div>
+    <!-- add new calendar event modal -->
+
+ <!-- jQuery 2.0.2 -->
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+ <!-- jQuery UI 1.10.3 -->
+ <script src="{% static 'js/jquery-ui-1.10.3.min.js' %}" type="text/javascript"></script>
+ <!-- Bootstrap -->
+ <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+ <!-- Morris.js charts -->
+ <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+ <!-- <script src="{% static 'js/plugins/morris/morris.min.js' %}" type="text/javascript"></script> -->
+ <!-- Sparkline -->
+ <script src="{% static 'js/plugins/sparkline/jquery.sparkline.min.js' %}" type="text/javascript"></script>
+ <!-- jvectormap -->
+ <script src="{% static 'js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' %}" type="text/javascript"></script>
+ <script src="{% static 'js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}" type="text/javascript"></script>
+ <!-- fullCalendar -->
+ <script src="{% static 'js/plugins/fullcalendar/fullcalendar.min.js' %}" type="text/javascript"></script>
+ <!-- jQuery Knob Chart -->
+ <script src="{% static 'js/plugins/jqueryKnob/jquery.knob.js' %}" type="text/javascript"></script>
+ <!-- daterangepicker -->
+ <script src="{% static 'js/plugins/daterangepicker/daterangepicker.js' %}" type="text/javascript"></script>
+ <!-- Bootstrap WYSIHTML5 -->
+ <script src="{% static 'js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}" type="text/javascript"></script>
+ <!-- iCheck -->
+ <script src="{% static 'js/plugins/iCheck/icheck.min.js' %}" type="text/javascript"></script>
+
+ <!-- AdminLTE App -->
+ <script src="{% static 'js/AdminLTE/app.js' %}" type="text/javascript"></script>
+
+{% block js %}
+       
+{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+        <div class="content-section">
+            <div class="media">
+                <img class="rounded-circle account-img" src="{{ user.perfil.imagen.url}}">
+                <div class="media-body">
+                    <h2 class="account-heading">{{user.nombres}}</h2>
+                    <p class="text-secondary">{{user.email}}</p>
+                </div>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Profile info</legend>
+                </fieldset>
+                {% bootstrap_form u_form %}
+                {% bootstrap_form p_form %}
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Update</button>
+                </div>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'delete_user' user.id %}">Delete</a>
+    
+            </form>
+            
+        </div>
+
+    
+    
+{% endblock content %}

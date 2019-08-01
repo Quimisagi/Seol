@@ -1,4 +1,5 @@
 {% load static %}
+{% load bootstrap4 %}
 <!DOCTYPE html>
 <html class="bg-black">
     <head>
@@ -22,12 +23,22 @@
     <body class="bg-black">
 
         <div class="form-box" id="login-box">
-            <div class="header">Cerraste sesión!</div>
-            <div class="body bg-gray">
-                <a href="{% url 'login' %}" class="text-center">Vuelve a iniciar sesión</a><br>
-                <a href="{% url 'home' %}" class="text-center">Volver a Home</a>       
-            </div>    
-        </div>    
+                <div class="pull-right box-tools" >
+                    <a class="btn" href="{%url 'home'%}" style="color: black">X</a>
+                </div>
+            <div class="header">Iniciar sesión</div>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="body bg-gray">
+                    {% bootstrap_form form %}
+                </div>
+                <div class="footer">                                                               
+                    <button type="submit" class="btn bg-olive btn-block">Entrar</button>  
+                    <a href="{% url 'register' %}" class="text-center">Crear cuenta nueva</a>
+                </div>
+            </form>
+        </div>
+
 
         <!-- jQuery 2.0.2 -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>

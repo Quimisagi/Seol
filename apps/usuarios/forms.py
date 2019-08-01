@@ -28,3 +28,6 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Perfil
         fields = ['imagen']
+        widgets = {
+            'imagen': forms.FileInput(attrs={'class': 'bootstrap4-multi-input'})
+        }
