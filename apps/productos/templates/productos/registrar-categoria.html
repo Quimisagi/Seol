@@ -15,7 +15,7 @@
     <div class="header">
         <h1 class="text-center">Crear Categoria</h1>
     </div>
-    <form action="{% url 'agregar_categoria' %}" method="POST">
+    <form action="{% url 'productos:agregar_categoria' %}" method="POST">
         {% csrf_token %}
         <div class="body bg-gray">
             {% bootstrap_form form %}

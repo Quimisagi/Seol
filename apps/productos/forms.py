@@ -1,38 +1,33 @@
 from django import forms
-from .models import Producto, Subcategoria, Categoria, Detalle_Producto
+from .models import Producto, Subcategoria, Categoria
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-class ProductCreateForm(forms.ModelForm):
+class Formulario_Registro_Producto(forms.ModelForm):
     class Meta:
         model =  Producto
-        fields = ['nombre', 'descripcion', 'precio_venta', 'cantidad_disponible', 'marca', 'subcategoria', 'imagen']
+        fields = ['nombre', 'descripcion', 'precio_venta', 'cantidad_disponible', 'marca', 'subcategoria', 'imagen', 'peso', 'color', 'garantia']
 
-class DetailCreateForm(forms.ModelForm):
-    class Meta:
-        model = Detalle_Producto
-        fields = ['peso', 'color', 'garantia', 'tamano', 'densidad']
-
-class CategoriaCreateForm(forms.ModelForm):
+class Formulario_Registro_Categoria(forms.ModelForm):
     class Meta:
         model =  Categoria
         fields = ['nombre']
 
-class SubcategoriaCreateForm(forms.ModelForm):
+class Formulario_Registro_Subcategoria(forms.ModelForm):
     class Meta:
         model =  Subcategoria
         fields = ['nombre']
 
-class ProductUpdateForm(forms.ModelForm):
+class Formulario_Editar_Producto(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio_venta', 'marca', 'subcategoria', 'imagen']
+        fields = ['nombre', 'descripcion', 'precio_venta', 'marca', 'subcategoria', 'imagen', 'peso', 'color', 'garantia']
 
-class CategoryUpdateForm(forms.ModelForm):
+class Formulario_Editar_Categoria(forms.ModelForm):
     class Meta:
         model = Categoria
         fields = ['nombre']
 
-class SubcategoryUpdateForm(forms.ModelForm):
+class Formulario_Editar_Subcategoria(forms.ModelForm):
     class Meta:
         model = Subcategoria
         fields = ['nombre']

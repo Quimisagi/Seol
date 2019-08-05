@@ -3,7 +3,7 @@ from .models import Usuario
 from django.contrib.auth.forms import UserCreationForm
 from .models import Perfil
 
-class UserRegisterForm(UserCreationForm):
+class Formulario_Registrar_Usuario(UserCreationForm):
     nombres = forms.CharField()
     apellidos = forms.CharField()
     email = forms.EmailField()
@@ -15,7 +15,7 @@ class UserRegisterForm(UserCreationForm):
         model = Usuario
         fields = ['nombres', 'apellidos', 'password1', 'password2', 'email', 'tipo_documento', 'numero_documento']
 
-class UserUpdateForm(forms.ModelForm):
+class Formulario_Editar_Usuario(forms.ModelForm):
     nombres = forms.CharField()
     apellidos = forms.CharField()
     email = forms.EmailField()
@@ -24,7 +24,7 @@ class UserUpdateForm(forms.ModelForm):
         model = Usuario
         fields = ['nombres', 'email', 'apellidos', 'telefono', 'direccion', 'fecha_nacimiento']
 
-class ProfileUpdateForm(forms.ModelForm):
+class Formulario_Editar_Perfil(forms.ModelForm):
     class Meta:
         model = Perfil
         fields = ['imagen']

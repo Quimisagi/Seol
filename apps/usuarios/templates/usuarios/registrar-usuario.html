@@ -4,7 +4,7 @@
 <html class="bg-black">
     <head>
         <meta charset="UTF-8">
-        <title>Seol | Registration Page</title>
+        <title>Seol | Registro</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
         <link href="{%static 'css/bootstrap.min.css'%}" rel="stylesheet" type="text/css" />
@@ -24,11 +24,11 @@
 
         <div class="form-box" id="login-box">
             <div class="pull-right box-tools" >
-                <a class="btn" href="{%url 'home'%}" style="color: black">X</a>
+                <a class="btn" href="{%url 'home:home'%}" style="color: black">X</a>
             </div>
             <div class="header">Registrate!</div>
             
-            <form action="{% url 'register' %}" method="POST">
+            <form action="{% url 'usuarios:agregar_usuario' %}" method="POST">
                 {% csrf_token %}
                 <div class="body bg-gray">
                     {% bootstrap_form form %}
@@ -38,7 +38,7 @@
 
                     <button type="submit" class="btn bg-olive btn-block">Enviar</button>
 
-                    <a href="{% url 'login' %}" class="text-center">Ya tienes cuenta?</a>
+                    <a href="{% url 'home:login' %}" class="text-center">Ya tienes cuenta?</a>
                 </div>
             </form>
             <!--

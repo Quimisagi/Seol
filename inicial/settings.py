@@ -160,6 +160,6 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'usuarios.Usuario'
 AUTH_PROFILE_MODULE = 'usuarios.Perfil'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home:home'
 #LOGIN_URL = 'login'
 

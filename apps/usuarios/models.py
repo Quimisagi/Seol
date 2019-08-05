@@ -15,7 +15,7 @@ class Usuario(AbstractUser):
     direccion = models.CharField(max_length=45, null=True)
     fecha_nacimiento = models.DateField(null=True)
     estado = models.BooleanField(default=True)
-    email = models.EmailField(('email address'), unique=True, null=False)
+    email = models.EmailField(('Correo'), unique=True, null=False)
     es_admin = models.BooleanField(default=False)
 
     #USERNAME_FIELD = 'email'
@@ -23,7 +23,7 @@ class Usuario(AbstractUser):
 
 class Perfil(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    imagen = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    imagen = models.ImageField(default='default.jpg', upload_to='fotos_perfil')
 
     def __str__(self):
         return 'Perfil de ' + self.usuario.nombres
@@ -40,12 +40,12 @@ class Perfil(models.Model):
 
      
 @receiver(post_save, sender=Usuario)
-def create_profile(sender, instance, created, **kwargs):
+def crear_perfil(sender, instance, created, **kwargs):
     if created:
         Perfil.objects.create(usuario=instance)
 
 @receiver(post_save, sender=Usuario)
-def save_profile(sender, instance, **kwargs):
+def guarda_perfil(sender, instance, **kwargs):
     instance.perfil.save()
 
 
