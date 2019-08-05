@@ -18,8 +18,8 @@ class Usuario(AbstractUser):
     email = models.EmailField(('email address'), unique=True, null=False)
     es_admin = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    #USERNAME_FIELD = 'email'
+    #REQUIRED_FIELDS = []
 
 class Perfil(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
