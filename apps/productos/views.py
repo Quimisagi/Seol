@@ -49,20 +49,23 @@ def lista_producto(request):
     }
     return render(request, 'productos/lista-producto.html', context)
 
-class eliminar_producto(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class eliminar_producto(LoginRequiredMixin, DeleteView):
     model = Producto
-    success_url = '/producto/lista'
+    success_url = reverse_lazy('productos:lista_producto')
 
-    def test_func(self, *args, **kwargs):
-        producto = get_object_or_404(Producto, pk=self.kwargs['pk'])
-        if self.request.method == 'POST':
-            producto.estado = False
-            producto.save()
-            messages.success(self.request, 'Producto eliminado!')
-            return redirect('productos:lista_producto')
-        else:
-            return render(self.request, 'productos/producto_confirm_delete.html', {})
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
 
+        self.object.estado = False
+        self.object.save()
+        messages.success(self.request, 'Producto eliminada!')
+        return redirect(success_url)
+   
 #Categorias--------------------------------------------------------------------------------------------
 
 def menu_categorias(request):
@@ -148,7 +151,7 @@ def editar_categoria(request, pk):
 def lista_subcategoria(request, pk):
     context = {
         'categoria': Categoria.objects.filter(id=pk).first(),
-        'subcategorias': Subcategoria.objects.filter(categoria=pk),
+        'subcategorias': Subcategoria.objects.filter(categoria=pk, estado=True),
     }
 
     return render(request, 'productos/lista-subcategoria.html', context)
@@ -169,6 +172,21 @@ def editar_subcategoria(request, pk):
         form = Formulario_Editar_Subcategoria(instance=subcategoria)
     return render(request, 'productos/actualizar-subcategoria.html', {'form': form})
 
+class eliminar_subcategoria(LoginRequiredMixin, DeleteView):
+    model = Subcategoria
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL.
+        """
+        self.object = self.get_object()
+        categoria = self.object.categoria
+       
+        self.object.estado = False
+        self.object.save()
+        messages.success(self.request, 'Subcategoria eliminada!')
+        return redirect('productos:lista_subcategoria', categoria.id)
 
 
 

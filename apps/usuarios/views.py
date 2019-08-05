@@ -4,6 +4,7 @@ from django.contrib import messages
 from .forms import Formulario_Editar_Perfil, Formulario_Editar_Usuario, Formulario_Registrar_Usuario
 from django.views.generic import DeleteView
 from .models import Usuario
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def registrar_usuario(request):
@@ -44,17 +45,20 @@ def editar_perfil(request):
     return render(request, 'usuarios/perfil.html', context)
 
 
-class eliminar_usuario(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class eliminar_usuario(LoginRequiredMixin, DeleteView):
     model = Usuario
-    success_url = '/'
+    success_url = reverse_lazy('home:home')
 
-    def test_func(self):
-        user = self.request.user
-        if self.request.method == 'POST':
-            user.is_active = False
-            user.save()
-            messages.success(self.request, 'Cuenta desabilitada!')
-            return redirect('home:home')
-        else:
-            return render(self.request, 'usuarios/usuario_confirm_delete.html', {})
-        
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+
+        self.object.is_active = False
+        self.object.save()
+        messages.success(self.request, 'Cuenta desabilitada!')
+        return redirect(success_url)
+    
