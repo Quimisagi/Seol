@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-lg-6 col-xs-6">
                 <!-- small box -->
-                <div class="small-box bg-green" onclick="window.location.assign('/categoria/agregar')">
+                <div class="small-box bg-green" onclick="window.location.assign('{% url 'productos:agregar_categoria'%}')">
                         <div class="inner">
                                 <h3 class="text-center">
                                     AGREGAR 
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col-lg-6 col-xs-6">
                 <!-- small box -->
-                <div class="small-box bg-aqua" onclick="window.location.assign('/categoria/lista')">
+                <div class="small-box bg-aqua" onclick="window.location.assign('{% url 'productos:lista_categoria'%}')">
                         <div class="inner">
                                 <h3 class="text-center">
                                     CONSULTAR

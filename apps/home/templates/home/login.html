@@ -24,17 +24,17 @@
 
         <div class="form-box" id="login-box">
                 <div class="pull-right box-tools" >
-                    <a class="btn" href="{%url 'home'%}" style="color: black">X</a>
+                    <a class="btn" href="{%url 'home:home'%}" style="color: black">X</a>
                 </div>
             <div class="header">Iniciar sesión</div>
-            <form action="{% url 'login' %}" method="POST">
+            <form action="{% url 'home:login' %}" method="POST">
                 {% csrf_token %}
                 <div class="body bg-gray">
                     {% bootstrap_form form %}
                 </div>
                 <div class="footer">                                                               
                     <button type="submit" class="btn bg-olive btn-block">Entrar</button>  
-                    <a href="{% url 'register' %}" class="text-center">Crear cuenta nueva</a>
+                    <a href="{% url 'usuarios:agregar_usuario' %}" class="text-center">Crear cuenta nueva</a>
                 </div>
             </form>
         </div>

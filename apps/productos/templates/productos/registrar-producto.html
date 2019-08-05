@@ -2,29 +2,18 @@
 {% load bootstrap4 %}
 {% block content %}
 
-    
     <div class="form-box", style="width: 80%!important;margin: 15px auto 0 auto!important ">
         <div class="header">
             <h3 class="text-center">Crear Producto</h3></div>
-        <form action="{% url 'agregar_producto' %}" method="POST" enctype="multipart/form-data">
+        <form action="{% url 'productos:agregar_producto' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="body bg-gray">
                     {% bootstrap_form form %}
-                    {% bootstrap_form form2 %}
                 </div>
-                
                 <div class="footer">                    
-
                     <button type="submit" class="btn bg-olive btn-block">Crear</button>
-
                 </div>
         </form>
     </div>
-
-    
-    
-
-        
-    
     
 {% endblock content %}

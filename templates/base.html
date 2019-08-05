@@ -39,7 +39,7 @@
   </head>
   <body class="skin-black">
     <header class="header">
-            <a href="{% url 'home' %}" class="logo">
+            <a href="{% url 'home:home' %}" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 <!--<img src="static/img/logo.png" alt="" width="200" height="50" > -->
                 Seol
@@ -68,13 +68,13 @@
 
                        {% else %}
                         <li>
-                                <a class="nav-item nav-link" href="{% url 'login' %}">
+                                <a class="nav-item nav-link" href="{% url 'home:login' %}">
                                     <i class="glyphicon glyphicon-log-in"></i>
-                                    <span>Login</span>
+                                    <span>Iniciar sesión</span>
                                 </a>
                         </li>
                         <li>
-                            <a class="nav-item nav-link" href="{% url 'register' %}">
+                            <a class="nav-item nav-link" href="{% url 'usuarios:agregar_usuario' %}">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     <span>Registrarse</span>
                             </a>
@@ -108,7 +108,7 @@
                         <!-- sidebar menu: : style can be found in sidebar.less -->
                         <ul class="sidebar-menu">
                             <li class="active">
-                                <a href="{% url 'profile' %}">
+                                <a href="{% url 'usuarios:perfil' %}">
                                     <i class="fa fa-user"></i>Perfil<span></span>
                                 </a>
                             </li>
@@ -128,7 +128,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'logout' %}">
+                                <a href="{% url 'home:logout' %}">
                                     <i class="fa  fa-power-off"></i> <span>Cerrar sesión</span>
                                 </a>
                             </li>
@@ -157,7 +157,7 @@
                         <!-- sidebar menu: : style can be found in sidebar.less -->
                         <ul class="sidebar-menu">
                             <li class="active">
-                                <a href="{% url 'profile' %}">
+                                <a href="{% url 'usuarios:perfil' %}">
                                     <i class="fa fa-user"></i>Perfil<span></span>
                                 </a>
                             </li>
@@ -167,19 +167,19 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'menu_categoria'%}">
+                                <a href="{% url 'productos:menu_categoria'%}">
                                     <i class="fa fa-tags"></i> <span>Categorias y Subcategorias</span>
                                     
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'menu_producto'%}">
+                                <a href="{% url 'productos:menu_producto'%}">
                                     <i class="fa fa-barcode"></i> <span>Productos</span>
                                     
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'logout' %}">
+                                <a href="{% url 'home:logout' %}">
                                     <i class="fa  fa-power-off"></i> <span>Cerrar sesión</span>
                                 </a>
                             </li>
