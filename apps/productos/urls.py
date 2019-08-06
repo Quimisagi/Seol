@@ -17,5 +17,12 @@ urlpatterns = [
     path('subcategoria/<int:pk>/lista/', views.lista_subcategoria, name='lista_subcategoria'),
     path('subcategoria/<int:pk>/actualizar/', views.editar_subcategoria, name='actu_subcategoria'),
     path('subcategoria/<int:pk>/eliminar/', views.eliminar_subcategoria.as_view(), name='eliminar_subcategoria'),
+    path('subcategoria/<int:pk>/agregar/', views.agregar_subcategoria, name='agregar_subcategoria'),
+    path('descuento/<int:pk>/agregar/', views.agregar_descuento, name='agregar_descuento'),
+    path('descuento/<int:pk>/actualizar/', views.editar_descuento, name='actu_descuento'),
+    path('descuento/lista/', views.lista_descuento, name='lista_descuento'),
+    path('descuento/<int:pk>/eliminar/', views.eliminar_descuento.as_view(), name='eliminar_descuento'),
+    path('<int:pk>/detalle/', views.detalle_producto, name='detalle_producto'),
+
     
 ]

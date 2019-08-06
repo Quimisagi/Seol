@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import Formulario_Registro_Producto, Formulario_Editar_Producto, Formulario_Registro_Subcategoria, Formulario_Registro_Categoria, Formulario_Editar_Categoria, Formulario_Editar_Subcategoria
-from .models import Categoria, Subcategoria, Producto
+from .forms import Formulario_Registro_Producto, Formulario_Editar_Producto, Formulario_Registro_Subcategoria, Formulario_Registro_Categoria, Formulario_Editar_Categoria, Formulario_Editar_Subcategoria, Formulario_Registro_Descuento, Formulario_Editar_Descuento
+from .models import Categoria, Subcategoria, Producto, Descuento_Producto
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import DeleteView
 from django.forms import modelformset_factory
+from django.core.exceptions import *
 
 #Productos--------------------------------------------------------------------
 
@@ -65,6 +66,22 @@ class eliminar_producto(LoginRequiredMixin, DeleteView):
         self.object.save()
         messages.success(self.request, 'Producto eliminada!')
         return redirect(success_url)
+
+def detalle_producto(request, pk):
+    
+    producto = get_object_or_404(Producto, pk=pk)
+    
+    try:
+        if producto.descuento_producto:
+            precio_viejo = producto.precio_venta
+            producto.precio_venta = (producto.precio_venta) - (producto.precio_venta * producto.descuento_producto.porcentaje)
+            producto.descuento_producto.porcentaje = producto.descuento_producto.porcentaje * 100
+            return render(request, 'productos/detalle_producto.html', {'producto': producto, 'precio_viejo': precio_viejo})
+        else:
+            return render(request, 'productos/detalle_producto.html', {'producto': producto})
+    except ObjectDoesNotExist:
+        return render(request, 'productos/detalle_producto.html', {'producto': producto})
+
    
 #Categorias--------------------------------------------------------------------------------------------
 
@@ -173,6 +190,7 @@ def editar_subcategoria(request, pk):
     return render(request, 'productos/actualizar-subcategoria.html', {'form': form})
 
 class eliminar_subcategoria(LoginRequiredMixin, DeleteView):
+
     model = Subcategoria
 
     def delete(self, request, *args, **kwargs):
@@ -188,10 +206,77 @@ class eliminar_subcategoria(LoginRequiredMixin, DeleteView):
         messages.success(self.request, 'Subcategoria eliminada!')
         return redirect('productos:lista_subcategoria', categoria.id)
 
+def agregar_subcategoria(request, pk):
+
+    if request.method == 'POST':
+
+        categoria = get_object_or_404(Categoria, pk=pk)
+        
+        form = Formulario_Registro_Subcategoria(request.POST)
+
+        if form.is_valid():
+
+            a = form.save(commit=False)
+            a.categoria = categoria
+            a.save()
+            messages.success(request, 'Subcategoria agregada!')
+            return redirect('productos:lista_subcategoria', categoria.id)
+    else:
+        form = Formulario_Registro_Subcategoria()
+    return render(request, 'productos/registrar-subcategoria.html', {'form': form})    
 
 
+#Descuentos---------------------------------------------------------------------------------------------------------------------
 
+def agregar_descuento(request, pk):
+
+    if request.method == 'POST':
+
+        producto = get_object_or_404(Producto, pk=pk)
+        
+        form = Formulario_Registro_Descuento(request.POST)
+
+        if form.is_valid():
+
+            a = form.save(commit=False)
+            a.producto = producto
+            a.save()
+            messages.success(request, 'Descuento agregado!')
+            return redirect('home:home')
+    else:
+        form = Formulario_Registro_Descuento()
+    return render(request, 'productos/registrar-descuento.html', {'form': form})    
+
+def editar_descuento(request, pk):
+
+    dscto = get_object_or_404(Descuento_Producto, pk=pk)
     
+    if request.method == 'POST':
+        form = Formulario_Editar_Descuento(request.POST, instance=dscto) 
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Descuento actualizado!')
+            return redirect('productos:lista_descuento')
+    else:
+        form = Formulario_Editar_Descuento(instance=dscto)
+    return render(request, 'productos/actualizar-descuento.html', {'form': form})
+
+def lista_descuento(request):
+    context = {
+        'descuentos': Descuento_Producto.objects.all(),
+    }
+
+    return render(request, 'productos/lista-descuento.html', context)
+
+
+class eliminar_descuento(LoginRequiredMixin, DeleteView):
+
+    model = Descuento_Producto
+
+    success_url = reverse_lazy('productos:lista_descuento')
+
+   
+
         
 
 
