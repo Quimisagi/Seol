@@ -23,6 +23,7 @@
                         <th>Marca</th>
                         <th>Cantidad</th>
                         <th>Subcategoria</th>
+                        <th>Descuento</th>
                         <th>Opciones</th>
                     </tr>
                     {% for producto in productos%}
@@ -32,7 +33,20 @@
                             <td>{{producto.marca}}</td>
                             <td>{{producto.cantidad_disponible}}</td>
                             <td>{{producto.subcategoria}}</td>
-                            <td><button class="btn btn-warning btn-sm" onclick="window.location.assign('{% url 'productos:actu_producto' producto.id %}')">Editar</button> <button class="btn btn-danger btn-sm " onclick="window.location.assign('{% url 'productos:eliminar_producto' producto.id %}')">Eliminar</button></td>
+                            {% if producto.descuento_producto %}
+                                <td>{{producto.descuento_producto.porcentaje}}</td>
+                            {% else %}
+                                <td>Ninguno</td>
+                            {% endif %}
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="window.location.assign('{% url 'productos:actu_producto' producto.id %}')">Editar</button> 
+                                <button class="btn btn-danger btn-sm " onclick="window.location.assign('{% url 'productos:eliminar_producto' producto.id %}')">Eliminar</button>
+                                {% if producto.descuento_producto %}
+                                    <button class="btn btn-success btn-sm disabled" onclick="window.location.assign('{% url 'productos:agregar_descuento' producto.id %}')">Poner descto</button>
+                                {% else %}
+                                    <button class="btn btn-success btn-sm " onclick="window.location.assign('{% url 'productos:agregar_descuento' producto.id %}')">Poner descto</button>
+                                {% endif %}    
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>
