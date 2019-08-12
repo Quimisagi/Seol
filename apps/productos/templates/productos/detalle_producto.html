@@ -39,12 +39,12 @@
                                     </strong>
                                 </h3>
                 
-                                <h3>
+                                <h5>
                                     Descripción: {{producto.descripcion}} <br>
                                     Peso: {{producto.peso}} <br>
                                     Color: {{producto.color}} <br>
                                     Garantía: {{producto.garantia}}
-                                </h3>
+                                </h5>
                 
                         
                                 {% if producto.descuento_producto.porcentaje %}
@@ -60,13 +60,29 @@
                                         <strong>$ {{producto.precio_venta}}</strong>
                                     </h3>
                                 {% endif %}
+                                <br>
+                                <br>
+                                <br>
+                                <div class="col-xs-3" style="padding-left: 0%">
+                                    <input type="text" class="form-control" placeholder="cantidad" value="1" id="cantidad">
+                                </div>
+                               
+                                <button class="btn btn-primary" onclick="agregar('{{producto.id}}')">Agregar al carrito</button>
+                               
+                                <script>
+                                    function agregar(id){ 
+                                        var cantidad = document.querySelector("#cantidad");
+                                        var url = '/carrito/agregar/'.concat(id).concat('/').concat(cantidad.value);
+                                        window.location.assign(url);
+                                        }
+                                </script>
                             </div>
                     </div>
 
             </div>
             
         </div>
-
+        
 
         <!-- jQuery 2.0.2 -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>

@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.usuarios',
     'apps.productos',
+    'apps.carrito',
 ]
 
 MIDDLEWARE = [
@@ -162,4 +163,5 @@ AUTH_PROFILE_MODULE = 'usuarios.Perfil'
 
 LOGIN_REDIRECT_URL = 'home:home'
 #LOGIN_URL = 'login'
+
 
