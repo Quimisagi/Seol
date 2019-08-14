@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Carrito de compras</h3>
+            </div>
+            <div class="box-body">
+                {%  for carritops in carritop %}
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <img src="{{carritops.producto.imagen.url}}" class="card-img-top" alt="">
+                        </div>
+                        <div class="col-xs-3">
+                            
+                            <h3>Producto : {{carritops.producto.nombre}}</h3> <br>
+                            <h3>Cantidad : <button class="btn bg-red btn-sm" onclick="window.location.assign('{% url 'carrito:actualizar_carrito' carritops.producto.id 2 %}')"><i class="fa fa-minus"></i></button>   {{carritops.cantidad}}   <button class="btn bg-green btn-sm" onclick="window.location.assign('{% url 'carrito:actualizar_carrito' carritops.producto.id 1 %}')"><i class="fa fa-plus"></i></button></h3> <br>
+                            <h3>Subtotal : {{carritops.subtotal}}</h3>
+                            <button class="btn btn-danger btn-sm" onclick="window.location.assign('{% url 'carrito:eliminar_carrito' carritops.producto.id %}')">Eliminar</button>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+        </div><!-- /.box -->
+    </div>
+    <div class="col-md-3">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Compra</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        Subtotal: {{total}} <br>
+                        IVA 19%: {{iva}} <br>
+                        <hr>
+                        Total: {{totaliva}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

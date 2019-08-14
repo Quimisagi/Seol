@@ -10,7 +10,7 @@ class Usuario(AbstractUser):
     nombres = models.CharField(max_length=45, null=False)
     apellidos = models.CharField(max_length=45, null=False)
     tipo_documento = models.CharField(max_length=20, null=False, choices=documentos)
-    numero_documento = models.CharField(max_length=45, null=False, unique=True)
+    numero_documento = models.IntegerField(null=False, unique=True)
     telefono = models.CharField(max_length=45, null=True)
     direccion = models.CharField(max_length=45, null=True)
     fecha_nacimiento = models.DateField(null=True)
