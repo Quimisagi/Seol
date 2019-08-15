@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from PIL import Image
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Categoria(models.Model):
@@ -18,7 +19,7 @@ class Subcategoria(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=50, null=False)
     descripcion = models.TextField()
-    precio_venta = models.FloatField(null=False) 
+    precio_venta = models.DecimalField(max_digits=9, decimal_places=1, null=False) 
     cantidad_disponible = models.IntegerField(null=False)
     marca = models.CharField(max_length=50, null=False)
     estado = models.BooleanField(default = True)
@@ -41,7 +42,7 @@ class Producto(models.Model):
 class Descuento_Producto(models.Model):
     fecha_inicio = models.DateField()
     fecha_final = models.DateField()
-    porcentaje = models
+    porcentaje = models.DecimalField(max_digits=1,decimal_places=1,validators=[MinValueValidator(0.1), MaxValueValidator(1)])
     producto = models.OneToOneField(Producto, on_delete=models.CASCADE)
 
 

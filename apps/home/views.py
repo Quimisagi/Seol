@@ -5,9 +5,9 @@ from django.contrib.auth import login, logout
 
 def home(request):
     context = {
-        'productos': Producto.objects.all(),
-        'categorias': Categoria.objects.all(),
-        'subcategorias': Subcategoria.objects.all()
+        'productos': Producto.objects.filter(estado=True),
+        'categorias': Categoria.objects.filter(estado=True),
+        'subcategorias': Subcategoria.objects.filter(estado=True)
     }
 
     return render(request, 'home/home.html', context)

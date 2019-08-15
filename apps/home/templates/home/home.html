@@ -46,19 +46,13 @@
             <!--Card content-->
             <div class="card-body text-center">
               <!--Category & Title-->
-              <a href="" class="grey-text">
-                <h5>{{producto.marca}}</h5>
-              </a>
-              <h5>
+              
+              <h4>
                 <strong>
-                  <a href="" class="dark-grey-text">{{producto.nombre}}</a>
+                  <a href="{% url 'productos:detalle_producto' producto.id %}" class="dark-grey-text">{{producto.nombre}} - {{producto.marca}}</a>
                 </strong>
-              </h5>
-
-              <h4 class="font-weight-bold blue-text">
-                <strong>{{producto.precio_venta}}</strong>
               </h4>
-
+                
             </div>
             <!--Card content-->
 
