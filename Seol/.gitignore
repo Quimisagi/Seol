@@ -1,0 +1,16 @@
+*.log
+*.pot
+*.pyc
+
+local_settings.py
+media
+
+*__pycache__/
+*migrations/
+
+.idea/*
+.vscode/*
+
+Seol/settings.py
+secrets.json
+

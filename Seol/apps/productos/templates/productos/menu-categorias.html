@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+<section class="content-header">
+        <h1 class="text-center">MENU CATEGORIAS</h1>
+        <br>
+        <br>
+</section>
+    <div class="row">
+        <div class="col-lg-6 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green" onclick="window.location.assign('{% url 'productos:agregar_categoria'%}')">
+                        <div class="inner">
+                                <h3 class="text-center">
+                                    AGREGAR 
+                                </h3>
+                                <p class="text-green">
+                                    awdawdawd
+                                </p>
+                                <p class="text-green">
+                                        awdawdawd
+                                </p>
+                            </div>
+                   
+                    <div class="icon">
+                        <i class="ion ion-plus-circled"></i>
+                    </div>
+                </div>
+        </div>
+
+
+    <div class="row">
+        <div class="col-lg-6 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua" onclick="window.location.assign('{% url 'productos:lista_categoria'%}')">
+                        <div class="inner">
+                                <h3 class="text-center">
+                                    CONSULTAR
+                                </h3>
+                                <p class="text-aqua">
+                                    awdawdawd
+                                </p>
+                                <p class="text-aqua">
+                                        awdawdawd
+                                </p>
+                            </div>
+                    
+                    <div class="icon">
+                        <i class="ion ion-search"></i>
+                    </div>
+                    
+                </div>
+        </div>
+    
+    </div>
+
+{% endblock content %}

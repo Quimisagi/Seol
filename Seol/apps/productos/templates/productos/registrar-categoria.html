@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+
+{% block css%}
+    <style>
+        .add-row {
+            margin: 5px;
+        }
+    </style>
+{% endblock %}
+
+<div class="form-box", style="width: 80%!important;margin: 15px auto 0 auto!important ">
+    <div class="header">
+        <h1 class="text-center">Crear Categoria</h1>
+    </div>
+    <form action="{% url 'productos:agregar_categoria' %}" method="POST">
+        {% csrf_token %}
+        <div class="body bg-gray">
+            {% bootstrap_form form %}
+            <hr>
+            <h3>Crear subcategorias</h3>
+            {{ formset.media }}
+            {{ formset.management_form }}
+            {% for form2 in formset %}
+                <div class="individual-form">
+                    {% for hidden in form.hidden_fields %} 
+                        {{ hidden }}
+                    {% endfor %}
+                    {% bootstrap_form form2 %}
+                    
+                </div>
+            {% endfor %}
+            <div class="pull-right add-subcategory"></div>
+            
+            <div class="footer">                    
+    
+                <button type="submit" class="btn bg-olive btn-block">Crear</button>
+    
+            </div>
+
+        </div>
+        
+    </form>
+</div>
+    
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'dynamic_formsets/jquery.formset.js' %}" type="text/javascript"> </script>
+
+    <script type="text/javascript">
+        $('.individual-form').formset({
+            addButtonHolder: $('div .add-subcategory'),
+            addCssClass: 'add-row btn btn-success btn-xs',          // CSS class applied to the add link
+            deleteCssClass: 'delete-row btn btn-danger btn-xs',    // CSS class applied to the delete link
+            uiText: {
+                addPrompt: 'Añadir sub categoria',         // Text used on the 'add a new form' control.
+                removePrompt: 'Remover',        // Text used on the 'delete this existing form' control.
+            },
+        });
+    </script>
+{% endblock %}

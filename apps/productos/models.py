@@ -23,10 +23,10 @@ class Producto(models.Model):
     marca = models.CharField(max_length=50, null=False)
     estado = models.BooleanField(default = True)
     subcategoria = models.ForeignKey(Subcategoria, on_delete=models.SET_NULL, null=True)
-    imagen = models.ImageField(upload_to='fotos_producto')
-    peso = models.CharField(max_length=50)
-    color = models.CharField(max_length=50)
-    garantia = models.CharField(max_length=50)
+    imagen = models.ImageField(upload_to='fotos_producto', null=True)
+    peso = models.CharField(max_length=50, null=True)
+    color = models.CharField(max_length=50, null=True)
+    garantia = models.CharField(max_length=50, null=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

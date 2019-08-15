@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+        <div class="content-section">
+            <div class="media">
+                <img class="rounded-circle account-img" src="{{ producto.imagen.url}}">
+                <div class="media-body">
+                    <h2 class="account-heading">{{producto.nombre}}</h2>
+                    <p class="text-secondary">{{producto.marca}}</p>
+            </div>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Información del producto</legend>
+                </fieldset>
+                {% bootstrap_form form %}
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Actualizar</button>
+                </div>
+            </form>
+            
+        </div>
+
+    
+    
+{% endblock content %}
