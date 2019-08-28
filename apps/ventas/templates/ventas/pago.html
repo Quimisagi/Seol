@@ -1,0 +1,748 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+
+<h1 class="text-center"> MÉTODOS DE PAGO </h1>
+<hr>
+<br>
+<div class="row">
+    <div class="col-md-3">
+        <h4>Seleccione la cantidad de fracciones</h4>
+    </div>
+    <div class="col-md-1">
+        <select name="cantidad_fracciones" id="cantidad_fracciones" class="form-control">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-success" type="button" id="agregar_fracciones">Fraccionar</button>
+    </div>
+</div>
+<br>
+<form id="contenedor" action="{% url 'ventas:confirmar_pago'%}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="factura" id="factura" value="{{factura}}" readonly>
+</form>
+<button class="btn btn-success" type="button" id="validar_datos" disabled=True>Confirmar</button>
+
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/jquery.validate.js'%}"></script>
+    <script>
+        
+        const cantidad_fracciones = document.querySelector('#cantidad_fracciones');
+        const agregar_fracciones = document.querySelector('#agregar_fracciones');
+        
+
+        /*Logica de la app*/
+        agregar_fracciones.addEventListener('click',
+            crear_fracciones
+        );
+        document.querySelector('#validar_datos').addEventListener('click', validar_datos);
+
+        function crear_fracciones() {
+            agregar_fracciones.disabled = true;
+            document.querySelector('#validar_datos').disabled = false; 
+            var num_fracciones = $('#cantidad_fracciones').val();
+            
+            for (var i = 0; i < num_fracciones; i++) {
+                if(num_fracciones == 1){
+                    $('<div class="row">' +
+                    '<div class="col col-md-4">' +
+                    '<select name="metodo_'+i+'" id="metodo_'+i+'"'+' '+'class="form-control metodo">' +
+                    '<option value="Efectivo">Efectivo</option>' +
+                    '<option value="Tarjeta Débito">Tarjeta Débito</option>' +
+                    '<option value="Tarjeta Crédito">Tarjeta Crédito</option>' +
+                    '</select>' + 
+                    '</div>' +
+
+                    '<div class="col-md-1">' +
+                    '<select name="porcentaje_'+i+'" id="porcentaje_'+i+'"'+' '+'class="form-control porcentaje">' +
+                    '<option value="100">100</option>' +
+                    '</select>' +
+                    '</div>' +
+                    '<div class="col-md-1">' +
+                    '%' +
+                    '</div>' +                   
+                    '</div>' + '<br>' + '<div class="row divs" id="div_'+i+'"></div><hr>').appendTo('form');
+                }
+                else{
+                    $('<div class="row">' +
+                    '<div class="col col-md-4">' +
+                    '<select name="metodo_'+i+'" id="metodo_'+i+'"'+' '+'class="form-control metodo">' +
+                    '<option value="Efectivo">Efectivo</option>' +
+                    '<option value="Tarjeta Débito">Tarjeta Débito</option>' +
+                    '<option value="Tarjeta Crédito">Tarjeta Crédito</option>' +
+                    '</select>' + 
+                    '</div>' +
+
+                    '<div class="col-md-1">' +
+                    '<select name="porcentaje_'+i+'" id="porcentaje_'+i+'"'+' '+'class="form-control porcentaje">' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="60">60</option>' +
+                    '<option value="70">70</option>' +
+                    '<option value="80">80</option>' +
+                    '<option value="90">90</option>' +
+                    '</select>' +
+                    '</div>' +
+                    '<div class="col-md-1">' +
+                    '%' +
+                    '</div>' +                   
+                    '</div>' + '<br>' + '<div class="row divs" id="div_'+i+'"></div><hr>').appendTo('form');
+                }
+                
+            }
+            var metodos = $('.metodo');
+            var n = metodos.length;
+            var d = $('.divs');
+            
+            if(n == 1){
+                var sel = metodos[0];
+                var div = d[0];
+                
+                sel.onchange = function(){
+                    
+                    if (sel.value == 'Tarjeta Débito'){
+                        if(document.querySelector('#div_tc')){
+                            document.querySelector('#div_tc').remove()  
+                        }
+                        //div.parentNode.removeChild()
+                        $('<div id="div_td"> <div class="col-md-4">'+
+                        '<input type="number" name="numero_o" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                        '<div class="col-md-4">'+
+                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<div class="col col-md-4">' +
+                        '<select name="banco_0" id="banco_0" class="form-control banco">' +
+                        '<option value="Bancolombia">Bancolombia</option>' +
+                        '<option value="BBVA">BBVA</option>' +
+                        '<option value="Caja social">Caja social</option>' +
+                        '<option value="Banco de Bogotá">Banco de Bogotá</option>' +
+                        '</select>' + 
+                        '</div> </div>').appendTo(div);
+                        /*var input = document.createElement("input");
+                        input.type = "number";
+                        input.id = "numero_0";
+                        input.className = "form-control numero";
+                        input.placeholder = "Número de tarjeta"
+                        div.appendChild(input);*/
+                    }
+                    else{
+                        if (sel.value == 'Tarjeta Crédito'){
+                            if(document.querySelector('#div_td')){
+                                document.querySelector('#div_td').remove()  
+                            }
+                            $('<div id="div_tc"> <div class="col-md-3">'+
+                            '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                            '<div class="col-md-2">'+
+                            '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                            '<div class="col col-md-3">' +
+                            '<select name="franqui_0" id="franqui_0" class="form-control franqui">' +
+                            '<option value="Mastercard">Mastercard</option>' +
+                            '<option value="Visa">Visa</option>' +
+                            '<option value="American">American Express</option>' +
+                            '<option value="Diners club">Diners club</option>' +
+                            '</select>' + 
+                            '</div>'+
+                            '<div class="col col-md-2">' +
+                            '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv" placeholder="CVV" ></div>'+
+                            '<div class="col col-md-2">' +
+                            '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div);
+                        }
+                        else{
+                            if(document.querySelector('#div_td')){
+                                document.querySelector('#div_td').remove()  
+                            }
+                            else if(document.querySelector('#div_tc')){
+                                document.querySelector('#div_tc').remove()  
+                            }
+                        }
+                    }
+                };
+            }
+            else{
+                if(n == 2){
+                    var sel1 = metodos[0];
+                    var sel2 = metodos[1];
+                    var div1 = d[0];
+                    var div2 = d[1];
+
+                    sel1.onchange = function(){
+                    
+                        if (sel1.value == 'Tarjeta Débito'){
+                        if(document.querySelector('#div_tc')){
+                            document.querySelector('#div_tc').remove()  
+                        }
+                       
+                        $('<div id="div_td"> <div class="col-md-4">'+
+                        '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                        '<div class="col-md-4">'+
+                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<div class="col col-md-4">' +
+                        '<select name="banco_0" id="banco_0" class="form-control banco">' +
+                        '<option value="Bancolombia">Bancolombia</option>' +
+                        '<option value="BBVA">BBVA</option>' +
+                        '<option value="Caja social">Caja social</option>' +
+                        '<option value="Banco de Bogotá">Banco de Bogotá</option>' +
+                        '</select>' + 
+                        '</div> </div>').appendTo(div1);
+                        
+                        }
+                        else{
+                            if (sel1.value == 'Tarjeta Crédito'){
+                                if(document.querySelector('#div_td')){
+                                    document.querySelector('#div_td').remove()  
+                                }
+                                $('<div id="div_tc"> <div class="col-md-3">'+
+                                '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                                '<div class="col-md-2">'+
+                                '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                                '<div class="col col-md-3">' +
+                                '<select name="franqui_0" id="franqui_0" class="form-control franqui">' +
+                                '<option value="Mastercard">Mastercard</option>' +
+                                '<option value="Visa">Visa</option>' +
+                                '<option value="American">American Express</option>' +
+                                '<option value="Diners club">Diners club</option>' +
+                                '</select>' + 
+                                '</div>'+
+                                '<div class="col col-md-2">' +
+                                '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv" placeholder="CVV" ></div>'+
+                                '<div class="col col-md-2">' +
+                                '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div1);
+                            }
+                            else{
+                                if(document.querySelector('#div_td')){
+                                    document.querySelector('#div_td').remove()  
+                                }
+                                else if(document.querySelector('#div_tc')){
+                                    document.querySelector('#div_tc').remove()  
+                                }
+                            }
+                        }
+                    };
+                    sel2.onchange = function(){
+                    
+                        if (sel2.value == 'Tarjeta Débito'){
+                            if(document.querySelector('#div_tc_1')){
+                                document.querySelector('#div_tc_1').remove()  
+                            }
+                            //div.parentNode.removeChild()
+                            $('<div id="div_td_1"> <div class="col-md-4">'+
+                            '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                            '<div class="col-md-4">'+
+                            '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                            '<div class="col col-md-4">' +
+                            '<select name="banco_1" id="banco_1" class="form-control banco">' +
+                            '<option value="Bancolombia">Bancolombia</option>' +
+                            '<option value="BBVA">BBVA</option>' +
+                            '<option value="Caja social">Caja social</option>' +
+                            '<option value="Banco de Bogotá">Banco de Bogotá</option>' +
+                            '</select>' + 
+                            '</div> </div>').appendTo(div2);
+                            /*var input = document.createElement("input");
+                            input.type = "number";
+                            input.id = "numero_0";
+                            input.className = "form-control numero";
+                            input.placeholder = "Número de tarjeta"
+                            div.appendChild(input);*/
+                    }
+                    else{
+                        if (sel2.value == 'Tarjeta Crédito'){
+                            if(document.querySelector('#div_td_1')){
+                                document.querySelector('#div_td_1').remove()  
+                            }
+                            $('<div id="div_tc_1"> <div class="col-md-3">'+
+                            '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                            '<div class="col-md-2">'+
+                            '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                            '<div class="col col-md-3">' +
+                            '<select name="franqui_1" id="franqui_1" class="form-control franqui">' +
+                            '<option value="Mastercard">Mastercard</option>' +
+                            '<option value="Visa">Visa</option>' +
+                            '<option value="American">American Express</option>' +
+                            '<option value="Diners club">Diners club</option>' +
+                            '</select>' + 
+                            '</div>'+
+                            '<div class="col col-md-2">' +
+                            '<input type="number" name="cvv_1" id="cvv_1" class="form-control cvv" placeholder="CVV" ></div>'+
+                            '<div class="col col-md-2">' +
+                            '<input type="number" name="cuota_1" id="cuota_1" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div2);
+                        }
+                        else{
+                            if(document.querySelector('#div_td_1')){
+                                document.querySelector('#div_td_1').remove()  
+                            }
+                            else if(document.querySelector('#div_tc_1')){
+                                document.querySelector('#div_tc_1').remove()  
+                            }
+                        }
+                    }
+                };
+
+                }
+                else{
+                    var sel1 = metodos[0];
+                    var sel2 = metodos[1];
+                    var sel3 = metodos[2];
+                    var div1 = d[0];
+                    var div2 = d[1];
+                    var div3 = d[2];
+
+                    sel1.onchange = function(){
+                    
+                        if (sel1.value == 'Tarjeta Débito'){
+                        if(document.querySelector('#div_tc')){
+                            document.querySelector('#div_tc').remove()  
+                        }
+                    
+                        $('<div id="div_td"> <div class="col-md-4">'+
+                        '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                        '<div class="col-md-4">'+
+                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<div class="col col-md-4">' +
+                        '<select name="banco_0" id="banco_0" class="form-control banco">' +
+                        '<option value="Bancolombia">Bancolombia</option>' +
+                        '<option value="BBVA">BBVA</option>' +
+                        '<option value="Caja social">Caja social</option>' +
+                        '<option value="Banco de Bogotá">Banco de Bogotá</option>' +
+                        '</select>' + 
+                        '</div> </div>').appendTo(div1);
+                        
+                        }
+                        else{
+                            if (sel1.value == 'Tarjeta Crédito'){
+                                if(document.querySelector('#div_td')){
+                                    document.querySelector('#div_td').remove()  
+                                }
+                                $('<div id="div_tc"> <div class="col-md-3">'+
+                                '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                                '<div class="col-md-2">'+
+                                '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                                '<div class="col col-md-3">' +
+                                '<select name="franqui_0" id="franqui_0" class="form-control franqui">' +
+                                '<option value="Mastercard">Mastercard</option>' +
+                                '<option value="Visa">Visa</option>' +
+                                '<option value="American">American Express</option>' +
+                                '<option value="Diners club">Diners club</option>' +
+                                '</select>' + 
+                                '</div>'+
+                                '<div class="col col-md-2">' +
+                                '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv" placeholder="CVV" ></div>'+
+                                '<div class="col col-md-2">' +
+                                '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div1);
+                            }
+                            else{
+                                if(document.querySelector('#div_td')){
+                                    document.querySelector('#div_td').remove()  
+                                }
+                                else if(document.querySelector('#div_tc')){
+                                    document.querySelector('#div_tc').remove()  
+                                }
+                            }
+                        }
+                };
+                sel2.onchange = function(){
+                
+                    if (sel2.value == 'Tarjeta Débito'){
+                        if(document.querySelector('#div_tc_1')){
+                            document.querySelector('#div_tc_1').remove()  
+                        }
+                        //div.parentNode.removeChild()
+                        $('<div id="div_td_1"> <div class="col-md-4">'+
+                        '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                        '<div class="col-md-4">'+
+                        '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<div class="col col-md-4">' +
+                        '<select name="banco_1" id="banco_1" class="form-control banco">' +
+                        '<option value="Bancolombia">Bancolombia</option>' +
+                        '<option value="BBVA">BBVA</option>' +
+                        '<option value="Caja social">Caja social</option>' +
+                        '<option value="Banco de Bogotá">Banco de Bogotá</option>' +
+                        '</select>' + 
+                        '</div> </div>').appendTo(div2);
+                        /*var input = document.createElement("input");
+                        input.type = "number";
+                        input.id = "numero_0";
+                        input.className = "form-control numero";
+                        input.placeholder = "Número de tarjeta"
+                        div.appendChild(input);*/
+                }
+                else{
+                    if (sel2.value == 'Tarjeta Crédito'){
+                        if(document.querySelector('#div_td_1')){
+                            document.querySelector('#div_td_1').remove()  
+                        }
+                        $('<div id="div_tc_1"> <div class="col-md-3">'+
+                        '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                        '<div class="col-md-2">'+
+                        '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<div class="col col-md-3">' +
+                        '<select name="franqui_1" id="franqui_1" class="form-control franqui">' +
+                        '<option value="Mastercard">Mastercard</option>' +
+                        '<option value="Visa">Visa</option>' +
+                        '<option value="American">American Express</option>' +
+                        '<option value="Diners club">Diners club</option>' +
+                        '</select>' + 
+                        '</div>'+
+                        '<div class="col col-md-2">' +
+                        '<input type="number" name="cvv_1" id="cvv_1" class="form-control cvv" placeholder="CVV" ></div>'+
+                        '<div class="col col-md-2">' +
+                        '<input type="number" name="cuota_1" id="cuota_1" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div2);
+                    }
+                    else{
+                        if(document.querySelector('#div_td_1')){
+                            document.querySelector('#div_td_1').remove()  
+                        }
+                        else if(document.querySelector('#div_tc_1')){
+                            document.querySelector('#div_tc_1').remove()  
+                        }
+                    }
+                }
+            };
+                    sel3.onchange = function(){
+                    
+                        if (sel3.value == 'Tarjeta Débito'){
+                        if(document.querySelector('#div_tc_2')){
+                            document.querySelector('#div_tc_2').remove()  
+                        }
+                        //div.parentNode.removeChild()
+                        $('<div id="div_td_2"> <div class="col-md-4">'+
+                        '<input type="number" name="numero_2" id="numero_2" class="form-control numero" placeholder="Número" ></div>'+
+                        '<div class="col-md-4">'+
+                        '<input type="text" name="fecha_2" id="fecha_2" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<div class="col col-md-4">' +
+                        '<select name="banco_2" id="banco_2" class="form-control banco">' +
+                        '<option value="Bancolombia">Bancolombia</option>' +
+                        '<option value="BBVA">BBVA</option>' +
+                        '<option value="Caja social">Caja social</option>' +
+                        '<option value="Banco de Bogotá">Banco de Bogotá</option>' +
+                        '</select>' + 
+                        '</div> </div>').appendTo(div3);
+                        /*var input = document.createElement("input");
+                        input.type = "number";
+                        input.id = "numero_0";
+                        input.className = "form-control numero";
+                        input.placeholder = "Número de tarjeta"
+                        div.appendChild(input);*/
+                }
+                else{
+                    if (sel3.value == 'Tarjeta Crédito'){
+                        if(document.querySelector('#div_td_2')){
+                            document.querySelector('#div_td_2').remove()  
+                        }
+                        $('<div id="div_tc_2"> <div class="col-md-3">'+
+                        '<input type="number" name="numero_2" id="numero_2" class="form-control numero" placeholder="Número" ></div>'+
+                        '<div class="col-md-2">'+
+                        '<input type="text" name="fecha_2" id="fecha_2" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<div class="col col-md-3">' +
+                        '<select name="franqui_2" id="franqui_2" class="form-control franqui">' +
+                        '<option value="Mastercard">Mastercard</option>' +
+                        '<option value="Visa">Visa</option>' +
+                        '<option value="American">American Express</option>' +
+                        '<option value="Diners club">Diners club</option>' +
+                        '</select>' + 
+                        '</div>'+
+                        '<div class="col col-md-2">' +
+                        '<input type="number" name="cvv_2" id="cvv_2" class="form-control cvv" placeholder="CVV" ></div>'+
+                        '<div class="col col-md-2">' +
+                        '<input type="number" name="cuota_2" id="cuota_2" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div3);
+                    }
+                    else{
+                        if(document.querySelector('#div_td_2')){
+                            document.querySelector('#div_td_2').remove()  
+                        }
+                        else if(document.querySelector('#div_tc_2')){
+                            document.querySelector('#div_tc_2').remove()  
+                        }
+                    }
+                }
+                    };
+                    
+                }
+            }
+            
+        }
+        function validar_datos(){
+            $(document).ready(function(){
+                var main = $('#contenedor');
+                main.validate({
+                    errorClass: 'has-error',
+                    rules: {
+                        numero_0: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        numero_0: {
+                            required: "funciono"
+                        }
+                    }
+                });
+                console.log(main);
+            });
+           
+            var metodos = $('.metodo');
+            var n = metodos.length;
+            var porcentajes = $('.porcentaje');
+            var m = porcentajes.length;
+
+            if (n == 1){
+                console.log("solo 1 metodo, ninguna validacion que hacer")
+                $('#contenedor').submit()
+            }
+            else if(n == 2){
+                if(metodos[0].value == metodos[1].value){
+                    if(metodos[0].value == 'Tarjeta Débito'){
+                        var b1 = document.querySelector('#banco_0').value;
+                        var b2 = document.querySelector('#banco_1').value; 
+                        if(b1 == b2){
+                            console.log("Deben ser tarjetas de bancos distintos")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) == 100){
+                                console.log("bancos distintos y porcentaje 100, ningun inconveniente")
+                                $('#contenedor').submit()
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100")
+                            }
+                        }
+                    }
+                    else if(metodos[0].value == 'Tarjeta Crédito'){
+                        var f1 = document.querySelector('#franqui_0').value;
+                        var f2 = document.querySelector('#franqui_1').value;
+                        if(f1 == f2){
+                            console.log("Deben ser tarjetas de franquicias distintas")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) == 100){
+                                console.log("franquicias distintas y porcentaje 100, ningun inconveniente")
+                                $('#contenedor').submit()
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100")
+                            }
+                        }
+                    }
+                    else{
+                        console.log("se tomara como pago en efectivo 100%")
+                    }
+
+                }
+                else{
+                    if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) == 100){
+                        console.log("porcentaje 100, ningun inconveniente")
+                        $('#contenedor').submit()
+                    }
+                    else{
+                        console.log("la suma de los porcentajes debe dar 100")
+                    }
+                }
+
+            }
+            else{ //LOS 3 SON DIFERENTES --------------------------------------------------------
+                if(metodos[0].value != metodos[1].value && metodos[0].value != metodos[2].value && metodos[1].value != metodos[2].value){
+                    console.log(metodos[0].value != metodos[1].value != metodos[2].value)
+                    console.log(metodos[0].value != metodos[1].value)
+                    if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                        console.log("Todo bien, todo bonito")
+                        $('#contenedor').submit()
+                    }
+                    else{
+                        console.log("la suma de los porcentajes debe dar 100, 3 dif")
+                    }
+                    
+                } // 1 Y 2 SON IGUALES ------------------------------------------------------------
+                else if(metodos[0].value == metodos[1].value && metodos[1].value != metodos[2].value){
+                    console.log(metodos[0].value + metodos[1].value + metodos[2].value)
+                    if(metodos[0].value == 'Tarjeta Débito'){
+                        var b1 = document.querySelector('#banco_0').value;
+                        var b2 = document.querySelector('#banco_1').value; 
+                        if(b1 == b2){
+                            console.log("Deben ser tarjetas de bancos distintos")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                console.log("bancos distintos y porcentaje 100, ningun inconveniente")
+                                $('#contenedor').submit()
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100, 1 y 2 td")
+                            }
+                        }
+                    }
+                    else if(metodos[0].value == 'Tarjeta Crédito'){
+                        var f1 = document.querySelector('#franqui_0').value;
+                        var f2 = document.querySelector('#franqui_1').value;
+                        if(f1 == f2){
+                            console.log("Deben ser tarjetas de franquicias distintas")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                console.log("franquicias distintas y porcentaje 100, ningun inconveniente")
+                                $('#contenedor').submit()
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100, 1 y 2 tc")
+                            }
+                        }
+                    }
+                    else{
+                        if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                            num = porcentajes[0].value + porcentajes[1];
+                            console.log("Se tomará efectivo al "+num+"%")
+                            $('#contenedor').submit()
+                        }
+                        else{
+                            console.log("La suma de los porcentajes debe de dar 100, 1 y 2 e")
+                        }
+                    }
+
+                } //1 Y 3 SON IGUALES ------------------------------------------------
+                else if(metodos[0].value == metodos[2].value && metodos[1].value != metodos[2].value){ 
+                    if(metodos[0].value == 'Tarjeta Débito'){
+                        var b1 = document.querySelector('#banco_0').value;
+                        var b2 = document.querySelector('#banco_2').value; 
+                        if(b1 == b2){
+                            console.log("Deben ser tarjetas de bancos distintos")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                console.log("bancos distintos y porcentaje 100, ningun inconveniente")
+                                $('#contenedor').submit()
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100, 1 y 3 td")
+                            }
+                        }
+                    }
+                    else if(metodos[0].value == 'Tarjeta Crédito'){
+                        var f1 = document.querySelector('#franqui_0').value;
+                        var f2 = document.querySelector('#franqui_2').value;
+                        if(f1 == f2){
+                            console.log("Deben ser tarjetas de franquicias distintas")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                console.log("franquicias distintas y porcentaje 100, ningun inconveniente")
+                                $('#contenedor').submit()
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100, 1 y 3 tc")
+                            }
+                        }
+                    }
+                    else{
+                        if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                            num = parseInt(porcentajes[0].value) + parseInt(porcentajes[2].value);
+                            console.log("Se tomará efectivo al "+num+"%")
+                            $('#contenedor').submit()
+                        }
+                        else{
+                            console.log("La suma de los porcentajes debe de dar 100, 1 y 3 e")
+                        }
+                    }
+
+
+                } // 2 Y 3 SON IGUALES --------------------------------------------------------------
+                else if(metodos[1].value == metodos[2].value && metodos[1].value != metodos[0].value){ 
+                    if(metodos[1].value == 'Tarjeta Débito'){
+                        var b1 = document.querySelector('#banco_1').value;
+                        var b2 = document.querySelector('#banco_2').value; 
+                        if(b1 == b2){
+                            console.log("Deben ser tarjetas de bancos distintos")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                $('#contenedor').submit()
+                                console.log("bancos distintos y porcentaje 100, ningun inconveniente")
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100, 2 y 3 e")
+                            }
+                        }
+                    }
+                    else if(metodos[1].value == 'Tarjeta Crédito'){
+                        var f1 = document.querySelector('#franqui_1').value;
+                        var f2 = document.querySelector('#franqui_2').value;
+                        if(f1 == f2){
+                            console.log("Deben ser tarjetas de franquicias distintas")
+                        }
+                        else{
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                $('#contenedor').submit()
+                                console.log("franquicias distintas y porcentaje 100, ningun inconveniente")
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100, 2 y 3 tc")
+                            }
+                        }
+                    }
+                    else{
+                        if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                            num = parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value);
+                            $('#contenedor').submit()
+                            console.log("Se tomará efectivo al "+num+"%")
+                        }
+                        else{
+                            console.log("La suma de los porcentajes debe de dar 100, 2 y 3 e")
+                        }
+                    }
+
+                }// LOS 3 SON IGUALES --------------------------------------------------------------------------------
+                else if(metodos[0].value == metodos[1].value && metodos[0].value == metodos[2].value && metodos[1].value == metodos[2].value){
+                    console.log(metodos[0].value + metodos[1].value + metodos[2].value) 
+                    
+                    if(metodos[1].value == 'Tarjeta Débito'){
+                        var b1 = document.querySelector('#banco_0').value;
+                        var b2 = document.querySelector('#banco_1').value; 
+                        var b3 = document.querySelector('#banco_2').value;
+                        if(b1 != b2 != b3){
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                $('#contenedor').submit()
+                                console.log("Bancos distintos y porcentaje 100, ningun problema")
+                            }
+                            else{
+                                console.log("la suma de los porcentajes debe dar 100, 3 td")
+                            }  
+                        }
+                        else{
+                            console.log("Los bancos deben de ser distintos")
+                        }
+                    }
+                    else if(metodos[1].value == 'Tarjeta Crédito'){
+                        var f1 = document.querySelector('#franqui_0').value;
+                        var f2 = document.querySelector('#franqui_1').value;
+                        var f3 = document.querySelector('#franqui_2').value;
+                        if(f1 != f2 != f3){
+                            if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) + parseInt(porcentajes[2].value) == 100){
+                                $('#contenedor').submit()
+                                console.log("Franquicias distintas y porcentaje 100, ningun problema")
+                            }
+                            else{
+                                console.log("La suma de los porcentajes debe ser 100, 3 tc")
+                            }
+                        }
+                        else{
+                            console.log("Deben ser de franquicias distintas")
+                            
+                        }
+                    }
+                    else{    
+                        $('#contenedor').submit()
+                        console.log("Se tomará efectivo al 100%")
+                    }
+                
+                }
+            }
+
+        }
+    </script>
+
+{% endblock %}

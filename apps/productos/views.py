@@ -82,6 +82,17 @@ def detalle_producto(request, pk):
     except ObjectDoesNotExist:
         return render(request, 'productos/detalle_producto.html', {'producto': producto})
 
+
+def abastecer_producto(request, pk):
+
+    producto = get_object_or_404(Producto, pk=pk)
+    cantidad = request.POST['cantidad']
+    producto.cantidad_disponible = producto.cantidad_disponible + int(cantidad)
+    producto.save()
+
+    return redirect('reportes:reporte_baja_existencia')
+
+
    
 #Categorias--------------------------------------------------------------------------------------------
 

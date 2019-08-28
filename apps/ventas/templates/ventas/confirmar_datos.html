@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+    <div class="form-box", style="width: 80%!important;margin: 15px auto 0 auto!important ">
+        <div class="header">
+            <h3 class="text-center">Confirmar datos</h3></div>
+        <form method="POST">
+                {% csrf_token %}
+                <div class="body bg-gray">
+                    {% bootstrap_form form %}
+                </div>
+                <div class="footer">                    
+                    <button type="submit" class="btn bg-olive btn-block">Confirmar</button>
+                </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById("id_nombres").value = '{{usuario.nombres}}';  
+        document.getElementById("id_apellidos").value = '{{usuario.apellidos}}';
+        document.getElementById("id_direccion").value = '{{usuario.direccion}}';
+        document.getElementById("id_telefono").value = '{{usuario.telefono}}';
+        document.getElementById("id_ciudad").value = 'Cali';
+        //document.getElementById("id_sede").disabled = false;
+    </script>
+    
+    
+{% endblock content %}

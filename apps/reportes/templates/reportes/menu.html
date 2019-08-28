@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <p class="text-transparent" style="color: aliceblue">Text muted to emphasize general</p>
+    </div>
+    <div class="col-md-4">
+        <img src="{% static '/img/logoFinal.png'%}">
+    </div>
+    <div class="col-md-4">
+        <p class="text-muted" style="color: aliceblue">Text muted to emphasize general</p>
+    </div>
+</div>
+ 
+<h1 class="text-center">REPORTES DE LA TIENDA</h1>
+
+<hr>
+<li><a href="{% url 'reportes:reporte_mas_vendidos'%}">
+    Productos más vendidos
+</a></li>
+
+<br>
+<li><a href="{% url 'reportes:reporte_menos_vendidos'%}">
+    Productos menos vendidos
+</a></li>
+
+<br>
+<li><a href="{% url 'reportes:reporte_mas_compras'%}">
+    Clientes que más han comprado 
+</a></li>
+
+<br>
+<li><a href="{% url 'reportes:reporte_ventas_por_rango'%}">
+    Ventas por rango de fecha 
+</a></li>
+
+<br>
+<li><a href="{% url 'reportes:reporte_baja_existencia'%}">
+    Productos con baja existencia 
+</a></li>
+
+<br>
+<li><a href="{% url 'reportes:reporte_cumpleanos'%}">
+    Clientes que cumplen años 
+</a></li>
+
+{% endblock content %}

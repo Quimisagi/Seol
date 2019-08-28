@@ -38,7 +38,8 @@
                         Subtotal: {{total}} <br>
                         IVA 19%: {{iva}} <br>
                         <hr>
-                        Total: {{totaliva}}
+                        Total: {{totaliva}} <br> <br>
+                        <button class="btn btn-success btn-sm" onclick="window.location.assign('{% url 'ventas:factura' %}')">Comprar</button>
                     </div>
                 </div>
             </div>

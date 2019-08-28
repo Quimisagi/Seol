@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+  <h1 class="text-center">{{titulo}}</h1>
+  <hr>
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#tab_1" data-toggle="tab">Gráfico de dona</a></li>
+      <li class=""><a href="#tab_2" data-toggle="tab">Gráfico de barras</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+          <div id="divC"></div>
+          <br>
+          <canvas id="pieChart" style="height: 250px; width: 550px;" height="250" width="550"></canvas>
+        </div><!-- /.tab-pane -->
+        <div class="tab-pane active" id="tab_2">
+            <div class="chart" style="width:70%!important;">
+            <canvas id="barChart"></canvas>
+            </div>
+        </div><!-- /.tab-pane -->
+    </div><!-- /.tab-content -->
+</div>
+
+{% endblock content %}
+{% block js %}
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //--------------
+    //- BAR CHART -
+    //--------------
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChart = new Chart(barChartCanvas);
+    var productos = {{productos | safe}};
+    var cantidad = {{cantidad}};
+    var barChartData = {
+      labels  : productos,
+      datasets: [
+        {
+          label               : 'Unidades vendidas',
+          fillColor           : 'rgb(141, 200, 232)',
+          strokeColor         : 'rgb(141, 200, 232)',
+          pointColor          : 'rgb(141, 200, 232)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : cantidad
+        }
+      ]
+    }
+    
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+    
+
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+    var pieChart       = new Chart(pieChartCanvas)
+    var n = {{tamaño}};
+    var PieData  = [];
+    var colores = ['#B0E0E6', '#7FFFD4', '#D8BFD8', '#87CEFA', '#98FB98', '#00FFFF', '#FFD700', '#DA70D6', '#D2B48C', '#FFE4B5']
+    for(i=0;i<n;i++){
+      $('<div class="cuadrado'+i+' col-md-1">'+productos[i]+'</div>'+
+        '<style>'+
+        '.cuadrado'+i+'{'+
+        'padding:5px;'+
+        'margin:5px;'+
+        'background-color: '+colores[i]+';'+
+        'color: black;'+
+        '}'+
+        '</style>').appendTo('#divC')
+      PieData.push(
+        {
+          value    : cantidad[i],
+          color    : colores[i],
+          highlight: colores[i],
+          label    : productos[i]
+        })
+      }
+    var pieOptions     = {
+      //Boolean - Whether we should show a stroke on each segment
+      segmentShowStroke    : true,
+      //String - The colour of each segment stroke
+      segmentStrokeColor   : '#fff',
+      //Number - The width of each segment stroke
+      segmentStrokeWidth   : 2,
+      //Number - The percentage of the chart that we cut out of the middle
+      percentageInnerCutout: 50, // This is 0 for Pie charts
+      //Number - Amount of animation steps
+      animationSteps       : 100,
+      //String - Animation easing effect
+      animationEasing      : 'easeOutBounce',
+      //Boolean - Whether we animate the rotation of the Doughnut
+      animateRotate        : true,
+      //Boolean - Whether we animate scaling the Doughnut from the centre
+      animateScale         : false,
+      //Boolean - whether to make the chart responsive to window resizing
+      responsive           : true,
+      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+      maintainAspectRatio  : true,
+      
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    pieChart.Doughnut(PieData, pieOptions)
+
+    
+  });
+
+  
+</script>
+{% endblock %}
