@@ -76,12 +76,12 @@ def reporte_ventas_por_rango(request):
 
         
         fecha_inicio = fechas.split("-")[0]
-        f1 = fecha_inicio.split("/")[2]+"-"+fecha_inicio.split("/")[0]+"-"+fecha_inicio.split("/")[1]
+        f1 = fecha_inicio.split("/")[0]+"-"+fecha_inicio.split("/")[1]+"-"+fecha_inicio.split("/")[2]
         fecha_i = datetime.strptime(f1,"%Y-%m-%d").date()
 
 
         fecha_fin = fechas.split("-")[1]
-        f2 = fecha_fin.split("/")[2]+"-"+fecha_fin.split("/")[0]+"-"+fecha_fin.split("/")[1]
+        f2 = fecha_fin.split("/")[0]+"-"+fecha_fin.split("/")[1]+"-"+fecha_fin.split("/")[2]
         fecha_f = datetime.strptime(f2,"%Y-%m-%d").date()
 
         producto = Factura.objects.filter(fecha__range=(fecha_i, fecha_f))

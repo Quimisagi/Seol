@@ -24,7 +24,7 @@
 <br>
 <form id="contenedor" action="{% url 'ventas:confirmar_pago'%}" method="POST">
     {% csrf_token %}
-    <input type="text" name="factura" id="factura" value="{{factura}}" readonly>
+    <input type="hidden" name="factura" id="factura" value="{{factura}}" readonly>
 </form>
 <button class="btn btn-success" type="button" id="validar_datos" disabled=True>Confirmar</button>
 
@@ -115,9 +115,9 @@
                         }
                         //div.parentNode.removeChild()
                         $('<div id="div_td"> <div class="col-md-4">'+
-                        '<input type="number" name="numero_o" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                        '<input type="number" name="numero_0" id="numero_0" class="form-control numero required" placeholder="Número" ></div>'+
                         '<div class="col-md-4">'+
-                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                         '<div class="col col-md-4">' +
                         '<select name="banco_0" id="banco_0" class="form-control banco">' +
                         '<option value="Bancolombia">Bancolombia</option>' +
@@ -139,9 +139,9 @@
                                 document.querySelector('#div_td').remove()  
                             }
                             $('<div id="div_tc"> <div class="col-md-3">'+
-                            '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                            '<input type="number" name="numero_0" id="numero_0" class="form-control numero required" placeholder="Número" ></div>'+
                             '<div class="col-md-2">'+
-                            '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                            '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                             '<div class="col col-md-3">' +
                             '<select name="franqui_0" id="franqui_0" class="form-control franqui">' +
                             '<option value="Mastercard">Mastercard</option>' +
@@ -151,9 +151,9 @@
                             '</select>' + 
                             '</div>'+
                             '<div class="col col-md-2">' +
-                            '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv" placeholder="CVV" ></div>'+
+                            '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv required" placeholder="CVV" ></div>'+
                             '<div class="col col-md-2">' +
-                            '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div);
+                            '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota required" placeholder="Cuotas" ></div></div>').appendTo(div);
                         }
                         else{
                             if(document.querySelector('#div_td')){
@@ -181,9 +181,9 @@
                         }
                        
                         $('<div id="div_td"> <div class="col-md-4">'+
-                        '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                        '<input type="number" name="numero_0" id="numero_0" class="form-control numero required" placeholder="Número" ></div>'+
                         '<div class="col-md-4">'+
-                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                         '<div class="col col-md-4">' +
                         '<select name="banco_0" id="banco_0" class="form-control banco">' +
                         '<option value="Bancolombia">Bancolombia</option>' +
@@ -200,9 +200,9 @@
                                     document.querySelector('#div_td').remove()  
                                 }
                                 $('<div id="div_tc"> <div class="col-md-3">'+
-                                '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                                '<input type="number" name="numero_0" id="numero_0" class="form-control numero required" placeholder="Número" ></div>'+
                                 '<div class="col-md-2">'+
-                                '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                                '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                                 '<div class="col col-md-3">' +
                                 '<select name="franqui_0" id="franqui_0" class="form-control franqui">' +
                                 '<option value="Mastercard">Mastercard</option>' +
@@ -212,9 +212,9 @@
                                 '</select>' + 
                                 '</div>'+
                                 '<div class="col col-md-2">' +
-                                '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv" placeholder="CVV" ></div>'+
+                                '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv required" placeholder="CVV" ></div>'+
                                 '<div class="col col-md-2">' +
-                                '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div1);
+                                '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota required" placeholder="Cuotas" ></div></div>').appendTo(div1);
                             }
                             else{
                                 if(document.querySelector('#div_td')){
@@ -234,9 +234,9 @@
                             }
                             //div.parentNode.removeChild()
                             $('<div id="div_td_1"> <div class="col-md-4">'+
-                            '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                            '<input type="number" name="numero_1" id="numero_1" class="form-control numero required" placeholder="Número" ></div>'+
                             '<div class="col-md-4">'+
-                            '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                            '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                             '<div class="col col-md-4">' +
                             '<select name="banco_1" id="banco_1" class="form-control banco">' +
                             '<option value="Bancolombia">Bancolombia</option>' +
@@ -258,9 +258,9 @@
                                 document.querySelector('#div_td_1').remove()  
                             }
                             $('<div id="div_tc_1"> <div class="col-md-3">'+
-                            '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                            '<input type="number" name="numero_1" id="numero_1" class="form-control numero required" placeholder="Número" ></div>'+
                             '<div class="col-md-2">'+
-                            '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                            '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                             '<div class="col col-md-3">' +
                             '<select name="franqui_1" id="franqui_1" class="form-control franqui">' +
                             '<option value="Mastercard">Mastercard</option>' +
@@ -270,9 +270,9 @@
                             '</select>' + 
                             '</div>'+
                             '<div class="col col-md-2">' +
-                            '<input type="number" name="cvv_1" id="cvv_1" class="form-control cvv" placeholder="CVV" ></div>'+
+                            '<input type="number" name="cvv_1" id="cvv_1" class="form-control cvv required" placeholder="CVV" ></div>'+
                             '<div class="col col-md-2">' +
-                            '<input type="number" name="cuota_1" id="cuota_1" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div2);
+                            '<input type="number" name="cuota_1" id="cuota_1" class="form-control cuota required" placeholder="Cuotas" ></div></div>').appendTo(div2);
                         }
                         else{
                             if(document.querySelector('#div_td_1')){
@@ -302,9 +302,9 @@
                         }
                     
                         $('<div id="div_td"> <div class="col-md-4">'+
-                        '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                        '<input type="number" name="numero_0" id="numero_0" class="form-control numero required" placeholder="Número" ></div>'+
                         '<div class="col-md-4">'+
-                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                         '<div class="col col-md-4">' +
                         '<select name="banco_0" id="banco_0" class="form-control banco">' +
                         '<option value="Bancolombia">Bancolombia</option>' +
@@ -321,9 +321,9 @@
                                     document.querySelector('#div_td').remove()  
                                 }
                                 $('<div id="div_tc"> <div class="col-md-3">'+
-                                '<input type="number" name="numero_0" id="numero_0" class="form-control numero" placeholder="Número" ></div>'+
+                                '<input type="number" name="numero_0" id="numero_0" class="form-control numero required" placeholder="Número" ></div>'+
                                 '<div class="col-md-2">'+
-                                '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                                '<input type="text" name="fecha_0" id="fecha_0" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                                 '<div class="col col-md-3">' +
                                 '<select name="franqui_0" id="franqui_0" class="form-control franqui">' +
                                 '<option value="Mastercard">Mastercard</option>' +
@@ -333,9 +333,9 @@
                                 '</select>' + 
                                 '</div>'+
                                 '<div class="col col-md-2">' +
-                                '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv" placeholder="CVV" ></div>'+
+                                '<input type="number" name="cvv_0" id="cvv_0" class="form-control cvv required" placeholder="CVV" ></div>'+
                                 '<div class="col col-md-2">' +
-                                '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div1);
+                                '<input type="number" name="cuota_0" id="cuota_0" class="form-control cuota required" placeholder="Cuotas" ></div></div>').appendTo(div1);
                             }
                             else{
                                 if(document.querySelector('#div_td')){
@@ -355,9 +355,9 @@
                         }
                         //div.parentNode.removeChild()
                         $('<div id="div_td_1"> <div class="col-md-4">'+
-                        '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                        '<input type="number" name="numero_1" id="numero_1" class="form-control numero required" placeholder="Número" ></div>'+
                         '<div class="col-md-4">'+
-                        '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                         '<div class="col col-md-4">' +
                         '<select name="banco_1" id="banco_1" class="form-control banco">' +
                         '<option value="Bancolombia">Bancolombia</option>' +
@@ -379,9 +379,9 @@
                             document.querySelector('#div_td_1').remove()  
                         }
                         $('<div id="div_tc_1"> <div class="col-md-3">'+
-                        '<input type="number" name="numero_1" id="numero_1" class="form-control numero" placeholder="Número" ></div>'+
+                        '<input type="number" name="numero_1" id="numero_1" class="form-control numero required" placeholder="Número" ></div>'+
                         '<div class="col-md-2">'+
-                        '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<input type="text" name="fecha_1" id="fecha_1" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                         '<div class="col col-md-3">' +
                         '<select name="franqui_1" id="franqui_1" class="form-control franqui">' +
                         '<option value="Mastercard">Mastercard</option>' +
@@ -391,9 +391,9 @@
                         '</select>' + 
                         '</div>'+
                         '<div class="col col-md-2">' +
-                        '<input type="number" name="cvv_1" id="cvv_1" class="form-control cvv" placeholder="CVV" ></div>'+
+                        '<input type="number" name="cvv_1" id="cvv_1" class="form-control cvv required" placeholder="CVV" ></div>'+
                         '<div class="col col-md-2">' +
-                        '<input type="number" name="cuota_1" id="cuota_1" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div2);
+                        '<input type="number" name="cuota_1" id="cuota_1" class="form-control cuota required" placeholder="Cuotas" ></div></div>').appendTo(div2);
                     }
                     else{
                         if(document.querySelector('#div_td_1')){
@@ -413,9 +413,9 @@
                         }
                         //div.parentNode.removeChild()
                         $('<div id="div_td_2"> <div class="col-md-4">'+
-                        '<input type="number" name="numero_2" id="numero_2" class="form-control numero" placeholder="Número" ></div>'+
+                        '<input type="number" name="numero_2" id="numero_2" class="form-control numero required" placeholder="Número" ></div>'+
                         '<div class="col-md-4">'+
-                        '<input type="text" name="fecha_2" id="fecha_2" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<input type="text" name="fecha_2" id="fecha_2" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                         '<div class="col col-md-4">' +
                         '<select name="banco_2" id="banco_2" class="form-control banco">' +
                         '<option value="Bancolombia">Bancolombia</option>' +
@@ -437,9 +437,9 @@
                             document.querySelector('#div_td_2').remove()  
                         }
                         $('<div id="div_tc_2"> <div class="col-md-3">'+
-                        '<input type="number" name="numero_2" id="numero_2" class="form-control numero" placeholder="Número" ></div>'+
+                        '<input type="number" name="numero_2" id="numero_2" class="form-control numero required" placeholder="Número" ></div>'+
                         '<div class="col-md-2">'+
-                        '<input type="text" name="fecha_2" id="fecha_2" class="form-control fecha" placeholder="Fecha de vencimiento" ></div>'+
+                        '<input type="text" name="fecha_2" id="fecha_2" class="form-control fecha required" placeholder="Fecha de vencimiento" ></div>'+
                         '<div class="col col-md-3">' +
                         '<select name="franqui_2" id="franqui_2" class="form-control franqui">' +
                         '<option value="Mastercard">Mastercard</option>' +
@@ -449,9 +449,9 @@
                         '</select>' + 
                         '</div>'+
                         '<div class="col col-md-2">' +
-                        '<input type="number" name="cvv_2" id="cvv_2" class="form-control cvv" placeholder="CVV" ></div>'+
+                        '<input type="number" name="cvv_2" id="cvv_2" class="form-control cvv required" placeholder="CVV" ></div>'+
                         '<div class="col col-md-2">' +
-                        '<input type="number" name="cuota_2" id="cuota_2" class="form-control cuota" placeholder="Cuotas" ></div></div>').appendTo(div3);
+                        '<input type="number" name="cuota_2" id="cuota_2" class="form-control cuota required" placeholder="Cuotas" ></div></div>').appendTo(div3);
                     }
                     else{
                         if(document.querySelector('#div_td_2')){
@@ -469,28 +469,26 @@
             
         }
         function validar_datos(){
-            $(document).ready(function(){
-                var main = $('#contenedor');
-                main.validate({
-                    errorClass: 'has-error',
-                    rules: {
-                        numero_0: {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        numero_0: {
-                            required: "funciono"
-                        }
-                    }
-                });
-                console.log(main);
-            });
-           
+            
+            var labels = $('.control-label')
+            var l = labels.length
+
+            for(i=0;i<l;i++){
+                console.log(i)
+                labels[i].parentNode.classList.remove("has-error");
+            }
+            labels.remove()
+
             var metodos = $('.metodo');
             var n = metodos.length;
             var porcentajes = $('.porcentaje');
             var m = porcentajes.length;
+            var bancos = $('.banco')
+            var numeros = $('.numero')
+            var fechas = $('.fecha')
+            var franquicias = $('.franqui')
+            var cvv = $('.cvv')
+            var cuotas = $('.cuota')
 
             if (n == 1){
                 console.log("solo 1 metodo, ninguna validacion que hacer")
@@ -502,15 +500,67 @@
                         var b1 = document.querySelector('#banco_0').value;
                         var b2 = document.querySelector('#banco_1').value; 
                         if(b1 == b2){
+                            b = document.getElementById('banco_0').parentNode
+                            bb = document.getElementById('banco_1').parentNode
+                            b.className += " has-error";
+                            bb.className += " has-error";
+                            $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Deben ser bancos distintos</label>').appendTo(b)
+                            $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Deben ser bancos distintos</label>').appendTo(bb)
                             console.log("Deben ser tarjetas de bancos distintos")
+                        }
+                        else if(numeros[0].value == numeros[1].value && numeros[0].value.length > 0 && numeros[1].value.length > 0){
+                            console.log("numero iguales iguales a vacio")
+                            if(numeros[0].value.length > 0){
+                                console.log("numeros iguales distintos de vacio")
+                                b = document.getElementById('numero_0').parentNode
+                                bb = document.getElementById('numero_1').parentNode
+                                b.className += " has-error";
+                                bb.className += " has-error";
+                                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Deben ser números distintos</label>').appendTo(b)
+                                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Deben ser números distintos</label>').appendTo(bb)
+                                
+                            }
+                            
+                        }
+                        else if(numeros[0].value.length === 0 || numeros[1].value.length === 0){
+                            console.log('validating number0 and number1 != 0')
+                            if(numeros[0].value.length == 0){
+                                console.log("numeros 1 vacio")
+                                b = document.getElementById('numero_0').parentNode
+                                b.className += " has-error";
+                                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Digite el número de tarjeta</label>').appendTo(b)
+                            }
+                            else{
+                                console.log("numeros 2 vacio")
+                                bb = document.getElementById('numero_1').parentNode
+                                bb.className += " has-error";
+                                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Digite el número de tarjeta</label>').appendTo(bb)
+                            }
+                        }
+                        else if(fechas[0].value.length == 0 || fechas[1].value.length == 0){
+                            console.log('validating fechas0 and fechas1 != 0')
+                            if(fechas[0].value.length == 0){
+                                console.log("fecha 1 vacio")
+                                b = document.getElementById('fecha_0').parentNode
+                                b.className += " has-error";
+                                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Digite la fecha de vencimiento</label>').appendTo(b)
+                            }
+                            else{
+                                console.log("fecha 2 vacio")
+                                bb = document.getElementById('fecha_1').parentNode
+                                bb.className += " has-error";
+                                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Digite la fecha de vencimiento</label>').appendTo(bb)
+                            }
                         }
                         else{
                             if(parseInt(porcentajes[0].value) + parseInt(porcentajes[1].value) == 100){
-                                console.log("bancos distintos y porcentaje 100, ningun inconveniente")
                                 $('#contenedor').submit()
                             }
                             else{
-                                console.log("la suma de los porcentajes debe dar 100")
+                                console.log("error porcentaje")
+                                b = document.getElementById('porcentaje_0').parentNode
+                                b.className += " has-error";
+                                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>La suma de los porcentajes debe dar 100</label>').appendTo(b)
                             }
                         }
                     }
