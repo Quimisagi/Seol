@@ -61,4 +61,8 @@ class eliminar_usuario(LoginRequiredMixin, DeleteView):
         self.object.save()
         messages.success(self.request, 'Cuenta desabilitada!')
         return redirect(success_url)
+
+def listar_usuarios(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
     

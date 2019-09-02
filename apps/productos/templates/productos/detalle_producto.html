@@ -63,12 +63,13 @@
                                 <br>
                                 <br>
                                 <br>
-                                <div class="col-xs-3" style="padding-left: 0%">
-                                    <input type="text" class="form-control" placeholder="cantidad" value="1" id="cantidad">
-                                </div>
-                               
-                                <button class="btn btn-primary" onclick="agregar('{{producto.id}}')">Agregar al carrito</button>
-                               
+                                {% if user.es_admin %}
+                                {% else %}
+                                    <div class="col-xs-3" style="padding-left: 0%">
+                                        <input type="text" class="form-control" placeholder="cantidad" value="1" id="cantidad">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="agregar('{{producto.id}}')">Agregar al carrito</button>
+                                {% endif %}
                                 <script>
                                     function agregar(id){ 
                                         var cantidad = document.querySelector("#cantidad");
