@@ -1,64 +1,66 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-    <form action="#" method="get" >
-      <div class="input-group margin">
-         <input type="text" class="form-control">
-         <span class="input-group-btn">
-             <button class="btn btn-info btn-flat" type="button">Go!</button>
-         </span>
-      </div>
-    </form>
-    <!-- Menu desplegable -->
-    <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs" style="justify-content: center" >
-            {% for categoria in categorias %}
-              <li class="dropdown" >
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="font-size: 2em;">
-                      {{categoria.nombre}} <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu" style="font-size: 1em;">
-                      {% for subcategoria in subcategorias %}
-                        {% if subcategoria.categoria_id == categoria.id%}
-                          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{subcategoria.nombre}}</a></li>
-                        {% endif %}
-                      {% endfor %}
-                  </ul>
-              </li>
+  <img src="{% static 'img/bb.png' %}">
+  <form action="#" method="get" >
+    <div class="input-group margin">
+      <input type="text" class="form-control">
+      <span class="input-group-btn">
+        <button class="btn btn-info btn-flat" type="button">Go!</button>
+      </span>
+    </div>
+  </form>
+  <!-- Menu desplegable -->
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs" style="justify-content: center" >
+      {% for categoria in categorias %}
+        <li class="dropdown" >
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="font-size: 2em;">
+            {{categoria.nombre}} <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" style="font-size: 1em;">
+            {% for subcategoria in subcategorias %}
+              {% if subcategoria.categoria_id == categoria.id%}
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{subcategoria.nombre}}</a></li>
+              {% endif %}
             {% endfor %}
-        </ul>
-    </div><!-- Hasta aqui -->
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  </div><!-- Hasta aqui -->
 
-    {% for producto in productos %}
-      <div class="col-lg-3 col-md-6 mb-4">
+  {% for producto in productos %}
+    <div class="col-lg-3 col-md-6 mb-4">
 
-          <!--Card-->
-          <div class="card">
+        <!--Card-->
+        <div class="card">
 
-            <!--Card image-->
-            <div class="view overlay">
-              <img src="{{producto.imagen.url}}" class="card-img-top" alt="" width="300" height="300">
-              <a>
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-            <!--Card image-->
-
-            <!--Card content-->
-            <div class="card-body text-center">
-              <!--Category & Title-->
-              
-              <h4>
-                <strong>
-                  <a href="{% url 'productos:detalle_producto' producto.id %}" class="dark-grey-text">{{producto.nombre}} - {{producto.marca}}</a>
-                </strong>
-              </h4>
-                
-            </div>
-            <!--Card content-->
-
+          <!--Card image-->
+          <div class="view overlay">
+            <img src="{{producto.imagen.url}}" class="card-img-top" alt="" width="300" height="300">
+            <a>
+              <div class="mask rgba-white-slight"></div>
+            </a>
           </div>
-          <!--Card-->
+          <!--Card image-->
+
+          <!--Card content-->
+          <div class="card-body text-center">
+            <!--Category & Title-->
+            
+            <h4>
+              <strong>
+                <a href="{% url 'productos:detalle_producto' producto.id %}" class="dark-grey-text">{{producto.nombre}} - {{producto.marca}}</a>
+              </strong>
+            </h4>
+              
+          </div>
+          <!--Card content-->
 
         </div>
-    {% endfor %}
+        <!--Card-->
+
+      </div>
+  {% endfor %}
 {% endblock content %}
