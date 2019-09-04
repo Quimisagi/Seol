@@ -66,16 +66,24 @@
                                 {% if user.es_admin %}
                                 {% else %}
                                     <div class="col-xs-3" style="padding-left: 0%">
-                                        <input type="text" class="form-control" placeholder="cantidad" value="1" id="cantidad">
+                                        <input type="number" class="form-control" placeholder="cantidad" value="1" id="cantidad" max="{{producto.cantidad_disponible}}" min="1">
                                     </div>
                                     <button class="btn btn-primary" onclick="agregar('{{producto.id}}')">Agregar al carrito</button>
                                 {% endif %}
                                 <script>
                                     function agregar(id){ 
                                         var cantidad = document.querySelector("#cantidad");
-                                        var url = '/carrito/agregar/'.concat(id).concat('/').concat(cantidad.value);
-                                        window.location.assign(url);
+                                        var cantidad_d = '{{producto.cantidad_disponible}}'
+                                        if(cantidad.value > parseInt(cantidad_d)){
+                                            cantidad.parentNode.className += " has-error";
+                                            $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>No hay suficientes unidades</label>').appendTo(cantidad.parentNode)
                                         }
+                                        else{
+                                            var url = '/carrito/agregar/'.concat(id).concat('/').concat(cantidad.value);
+                                            window.location.assign(url);
+                                        }
+                                    }
+
                                 </script>
                             </div>
                     </div>

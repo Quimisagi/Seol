@@ -65,4 +65,10 @@ class eliminar_usuario(LoginRequiredMixin, DeleteView):
 def listar_usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
-    
+
+def activar_usuario(request, pk):
+    usuario = Usuario.objects.get(id=pk)
+    usuario.is_active = True
+    usuario.save()
+    messages.success(request, 'Cuenta activada!')
+    return redirect('usuarios:listar_usuarios')

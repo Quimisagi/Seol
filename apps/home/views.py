@@ -11,4 +11,12 @@ def home(request):
     }
 
     return render(request, 'home/home.html', context)
+    
+def filtrado(request, pk):
+    context = {
+        'productos': Producto.objects.filter(estado=True, subcategoria_id=pk),
+        'categorias': Categoria.objects.filter(estado=True),
+        'subcategorias': Subcategoria.objects.filter(estado=True)
+    }
 
+    return render(request, 'home/home.html', context)

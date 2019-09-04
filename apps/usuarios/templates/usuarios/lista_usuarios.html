@@ -26,15 +26,14 @@
                     </tr>
                     {% for usuario in usuarios%}
                         <tr>
-                            <td>{{usuario.id}}</td>
                             <td>{{usuario.nombres}}</td>
                             <td>{{usuario.apellidos}}</td>
                             <td>{{usuario.email}}</td>
-                            <td>{{usuario.estado}}</td>
-                            {% if usuario.estado %}
-                                <td><button class="btn btn-danger btn-sm " onclick="window.location.assign('{% url 'usuarios:eliminar_usuario' %}')">Desactivar</button></td>
+                            <td>{{usuario.is_active}}</td>
+                            {% if usuario.is_active %}
+                                <td><button class="btn btn-danger btn-sm " onclick="window.location.assign('{% url 'usuarios:eliminar_usuario' usuario.id %}')">Desactivar</button></td>
                             {% else %}
-                                <td><button class="btn btn-success btn-sm ">Activar</button></td>
+                                <td><button class="btn btn-success btn-sm " onclick="window.location.assign('{% url 'usuarios:activar_usuario' usuario.id %}')">Activar</button></td>
                             {% endif %}
                         </tr>
                     {% endfor %}

@@ -23,7 +23,6 @@
                         <th>Fecha</th>
                         <th>Ciudad</th>
                         <th>Dirección</th>
-                        <th>Opciones</th>
                     </tr>
                     {% for factura in facturas%}
                         <tr>
@@ -32,9 +31,6 @@
                             <td>{{factura.fecha}}</td>
                             <td>{{factura.ciudad_usuario}}</td>
                             <td>{{factura.direccion_usuario}}</td>
-                            <td>
-                                <button class="btn btn-success btn-sm">Descargar</button>    
-                            </td>
                         </tr>
                     {% endfor %}
                 </table>

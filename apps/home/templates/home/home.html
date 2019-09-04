@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-  <img src="{% static 'img/bb.png' %}">
+  <div class="row">
+    <div class="col-md-3">
+      <h6 style="color: transparent">twe4twerte4t</h6>
+    </div>
+    <div class="col-md-6">
+      <img src="{% static 'img/bb.png' %}">
+    </div>
+    <div class="col-md-3">
+      <h6 style="color: transparent">twe4twerte4t</h6>
+    </div>
+  </div>
+  
   <form action="#" method="get" >
     <div class="input-group margin">
       <input type="text" class="form-control">
@@ -13,6 +24,11 @@
   <!-- Menu desplegable -->
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs" style="justify-content: center" >
+      <li class="dropdown" >
+        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'home:home' %}" style="font-size: 2em;">
+          Todas   
+        </a>
+      </li>
       {% for categoria in categorias %}
         <li class="dropdown" >
           <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="font-size: 2em;">
@@ -21,7 +37,7 @@
           <ul class="dropdown-menu" style="font-size: 1em;">
             {% for subcategoria in subcategorias %}
               {% if subcategoria.categoria_id == categoria.id%}
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{subcategoria.nombre}}</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'home:filtrado' subcategoria.id %}">{{subcategoria.nombre}}</a></li>
               {% endif %}
             {% endfor %}
           </ul>
