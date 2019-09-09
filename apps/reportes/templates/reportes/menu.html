@@ -13,8 +13,8 @@
         <p class="text-muted" style="color: aliceblue">Text muted to emphasize general</p>
     </div>
 </div>
- 
-<h1 class="text-center">REPORTES DE LA TIENDA</h1>
+ <br>
+<h1>   REPORTES DE LA TIENDA  </h1>
 
 <hr>
 <li><a href="{% url 'reportes:reporte_mas_vendidos'%}">
@@ -45,5 +45,28 @@
 <li><a href="{% url 'reportes:reporte_cumpleanos'%}">
     Clientes que cumplen años 
 </a></li>
+
+<br>
+<li class="dropdown" >
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        Ventas por producto <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" style="font-size: 1em;">
+        {% for producto in products%}
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'reportes:producto_ventas' producto.id %}">{{producto.nombre}}</a></li>
+        {% endfor %}
+    </ul>
+</li>
+<!--<li><a href="{% url 'reportes:producto_ventas' 1%}">
+    Ventas por producto
+</a>
+<select name="producto" id="producto" class="form-control banco">
+    {% for producto in products%}
+        <option value={{producto.id}}>{{producto.nombre}}</option>
+    {% endfor %}
+</select>
+
+</li> -->
+
 
 {% endblock content %}

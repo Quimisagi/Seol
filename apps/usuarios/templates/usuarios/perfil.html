@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
+{% load static %}
 {% block content %}
 
         <div class="content-section">
@@ -20,8 +21,10 @@
                 <div class="form-group">
                     <button class="btn btn-outline-info" type="submit">Actualizar</button>
                 </div>
+                {% if user.es_admin %}
+                {% else %}
                 <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'usuarios:eliminar_usuario' user.id %}">Desactivar</a>
-    
+                {% endif %}
             </form>
             
         </div>
@@ -29,3 +32,4 @@
     
     
 {% endblock content %}
+

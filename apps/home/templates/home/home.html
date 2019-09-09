@@ -9,15 +9,16 @@
       <img src="{% static 'img/bb.png' %}">
     </div>
     <div class="col-md-3">
-      <h6 style="color: transparent">twe4twerte4t</h6>
+      <h6 style="color: transparent">twe4twerte4t   #340c4f</h6>
     </div>
   </div>
-  
-  <form action="#" method="get" >
+
+  <form action="{% url 'home:filtrado_buscador' %}" method="POST" >
+    {% csrf_token %}
     <div class="input-group margin">
-      <input type="text" class="form-control">
+      <input type="text" name="palabra" class="form-control" placeholder="Buscar...">
       <span class="input-group-btn">
-        <button class="btn btn-info btn-flat" type="button">Go!</button>
+        <button class="btn btn-info btn-flat" type="submit" style="background-color: #593a6f; border-color: #593a6f"><i class="fa fa-search"></i></button>
       </span>
     </div>
   </form>
@@ -25,13 +26,13 @@
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs" style="justify-content: center" >
       <li class="dropdown" >
-        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'home:home' %}" style="font-size: 2em;">
+        <a class="dropdown-toggle" href="{% url 'home:home' %}" style="font-size: 2em; color: black">
           Todas   
         </a>
       </li>
       {% for categoria in categorias %}
         <li class="dropdown" >
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="font-size: 2em;">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="font-size: 2em; color: black">
             {{categoria.nombre}} <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" style="font-size: 1em;">
@@ -45,7 +46,40 @@
       {% endfor %}
     </ul>
   </div><!-- Hasta aqui -->
+  {% if d%}
+    {% for pr in productos %}
+      <div class="col-lg-3 col-md-6 mb-4">
+        
 
+          <!--Card-->
+        <div class="card" style="border-bottom-color: black">
+
+            <!--Card image-->
+            <div class="view overlay">
+              <img src="{{pr.producto.imagen.url}}" class="card-img-top" alt="" width="300" height="300">
+              <a>
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+            <!--Card image-->
+
+            <!--Card content-->
+            <div class="card-body text-center">
+              <!--Category & Title-->
+              
+              <h4>
+                 <a href="{% url 'productos:detalle_producto' pr.producto.id %}" style="color: black">{{pr.producto.nombre}} - {{pr.producto.marca}}</a>
+              </h4>
+                
+            </div>
+            <!--Card content-->
+
+          </div>
+          <!--Card-->
+
+      </div>
+    {% endfor %}
+  {% else %}
   {% for producto in productos %}
     <div class="col-lg-3 col-md-6 mb-4">
 
@@ -79,4 +113,5 @@
 
       </div>
   {% endfor %}
+  {% endif %}
 {% endblock content %}

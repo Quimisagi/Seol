@@ -86,7 +86,7 @@
             </p>
         </div>--><!-- /.col -->
         <div class="col-xs-6">
-            <p class="lead">{{fecha}}</p>
+            <p class="lead">{{factura.fecha}}</p>
             <div class="table-responsive">
                 <table class="table">
                     <tbody><tr>
@@ -99,7 +99,7 @@
                     </tr>
                     <tr>
                         <th>Envío:</th>
-                        <td>{{envio}}</td>
+                        <td>5000</td>
                     </tr>
                     <tr>
                         <th>Total:</th>
@@ -108,12 +108,29 @@
                 </tbody></table>
             </div>
         </div><!-- /.col -->
+
+        <div class="col-xs-6">
+            <p class="lead">Métodos de pago</p>
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                        {% for m in pagos%}
+                        <tr>
+                            <th>{{m.metodo_pago}}:</th>
+                            <td>{{m.valor}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- /.col -->
     </div><!-- /.row -->
 
     <!-- this row will not appear when printing -->
     <div class="row no-print">
         <div class="col-xs-12">
-            <button class="btn btn-success pull-right" onclick="window.location.assign('{% url 'ventas:pago' factura.id %}')"><i class="fa fa-credit-card"></i> Confirmar Pago</button>  
+            <button class="btn btn-default pull-right" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
+            <button class="btn btn-success pull-right" onclick="window.location.assign('{% url 'ventas:historial_compras' %}')">Salir</button>  
         </div>
     </div>
 </section>

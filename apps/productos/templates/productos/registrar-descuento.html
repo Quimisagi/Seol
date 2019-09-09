@@ -6,14 +6,69 @@
         <div class="header">
             <h3 class="text-center">Crear Descuento</h3></div>
         <form method="POST">
-                {% csrf_token %}
-                <div class="body bg-gray">
-                    {% bootstrap_form form %}
-                </div>
-                <div class="footer">                    
-                    <button type="submit" class="btn bg-olive btn-block">Crear</button>
-                </div>
+            {% csrf_token %}
+            <div class="body bg-gray">
+                <div class="form-group">
+                    <label>Rango de fecha:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control pull-right" name="reservation" id="reservation">
+                    </div>
+                    <input type="text" class="form-control" name="fecha_inicio" id="id_fecha_inicio" placeholder="Fecha de inicio" disabled>
+                    <input type="text" class="form-control" name="fecha_final" id="id_fecha_final" placeholder="Fecha de fin" disabled>
+                    <input type="number" step="0.1" min="0.1" max="1" class="form-control" name="porcentaje" id="porcentaje" placeholder="Porcentaje">
+                </div> 
+                
+            </div>
+            <div class="footer body bg-gray">                    
+                <button type="submit" id="boton" class="btn bg-olive btn-block" onclick="enviar('{{producto.id}}')">Crear</button>
+            </div>
         </form>
     </div>
     
 {% endblock content %}
+
+{% block js%}
+<script type="text/javascript">
+    document.getElementById('id_fecha_inicio').disabled = true;
+    document.getElementById('id_fecha_final').disabled = true;
+    
+    //Date range picker
+    $('#reservation').daterangepicker({
+        //options
+        }, function(start, end, label) {
+        $('#id_fecha_inicio').val(start.format('YYYY/MM/DD'));
+        $('#id_fecha_final').val(end.format('YYYY/MM/DD'));
+        });  
+    
+    
+    function enviar(id){
+        console.log(document.getElementById('reservation').value)
+        
+        document.getElementById('id_fecha_inicio').value = document.getElementById('reservation').split('-')[0]
+        document.getElementById('id_fecha_final').value = document.getElementById('reservation').split('-')[1]
+
+        console.log('fecha inicio'+document.getElementById('id_fecha_inicio').value)
+        console.log('fecha fin'+document.getElementById('id_fecha_final').value)
+        var p = document.getElementById('porcentaje')
+        var url = '/productos/descuento/'.concat(id).concat('/agregar/');
+
+        if(p.value > 0 && p.value < 1){
+            if(p.value.lenght > 2){
+                alert("Ingrese un porcentaje válido")
+            }
+            else{
+                window.location.assign(url);
+            }
+
+        }
+        else{
+            alert("El porcentaje es de 0.1 a 1")
+        }
+
+    };
+</script>
+{% endblock js %}
+

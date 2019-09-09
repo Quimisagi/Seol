@@ -77,6 +77,9 @@ def confirmar_pago(request):
     print(datos)
     m = 0
     factura = Factura.objects.filter(id=datos['factura']).first()
+    print(factura.total)
+    print(factura.estado)
+
     if 'metodo_0' in datos:
         m = m + 1
     if 'metodo_1' in datos:
@@ -100,7 +103,7 @@ def confirmar_pago(request):
             t.factura_pago.add(f)
     elif m == 2:
         if datos['metodo_0'] == 'Efectivo' and datos['metodo_1'] == 'Efectivo':
-            Factura_Pago(metodo_pago=datos['metodo_0'], valor=factura.total).save()
+            Factura_Pago(metodo_pago=datos['metodo_0'], valor=factura.total, factura=factura).save()
         else:
             for i in range(2):
                 metodo = 'metodo_'+str(i) 
@@ -211,17 +214,23 @@ def confirmar_pago(request):
         elif p.metodo_pago == 'Tarjeta Débito':
             tarjetasd.append(p.tarjetad_set.all())
    
-   
-    print(pagos)
-    print(tarjetasc)
-    print(tarjetasd)
+    pro = Factura_Producto.objects.filter(factura=factura)
+
+    t = 0
+
+    for p in pro:
+        t = t + p.subtotal
+
+    iva = (t * 19)/100
     context = {
         'pagos': pagos,
-        'tarjetasc': tarjetasc,
-        'tarjetasd': tarjetasd
+        'factura': factura,
+        'carritop': pro,
+        'iva': iva,
+        'total': t
     }
     messages.success(request, 'Compra realizada con exito!')
-    return redirect('ventas:historial_compras')
+    return render(request, 'ventas/factura_final.html', context)
 
 def historial_compras(request):
     usuario = request.user

@@ -4,10 +4,14 @@ from apps.ventas.models import *
 from apps.usuarios.models import *
 from django.db.models import Avg, Count, Min, Sum
 from datetime import datetime
+from django.contrib.auth.decorators import login_required, permission_required
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def menu(request):
-    return render(request, 'reportes/menu.html', {})
- 
+    productos = Producto.objects.all()
+    return render(request, 'reportes/menu.html', {'products': productos})
+
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_mas_vendidos(request):
     producto = Factura_Producto.objects.values('producto').annotate(num=Sum('cantidad')).order_by('-num')[:20]
 
@@ -28,6 +32,7 @@ def reporte_mas_vendidos(request):
     }
     return render(request, 'reportes/prueba.html', context) 
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_mas_compras(request):
     facturas = Factura.objects.values('id_usuario').annotate(num=Sum('total')).order_by('-num')[:20]
 
@@ -48,6 +53,7 @@ def reporte_mas_compras(request):
     }
     return render(request, 'reportes/prueba.html', context) 
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_menos_vendidos(request):
 
     producto = Factura_Producto.objects.values('producto').annotate(num=Sum('cantidad')).order_by('num')[:20]
@@ -70,6 +76,7 @@ def reporte_menos_vendidos(request):
 
     return render(request, 'reportes/prueba.html', context) 
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_ventas_por_rango(request):
     if request.method == 'POST':
         fechas = request.POST['reservation']
@@ -101,15 +108,24 @@ def reporte_ventas_por_rango(request):
 
         return render(request, 'reportes/barras.html', {'cantidad': total, 'productos': label})
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_baja_existencia(request):
     productos = Producto.objects.filter(cantidad_disponible__lt=10)
 
     return render(request, 'reportes/baja_cantidad.html', {'productos': productos})
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_cumpleanos(request):
     mes = datetime.now().month
     usuarios = Usuario.objects.filter(fecha_nacimiento__month=mes)
 
     return render(request, 'reportes/cumpleanos.html', {'usuarios': usuarios})
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
+def producto_ventas(request, pk):
+    p = Producto.objects.all()
+    nombre = Producto.objects.get(id=pk)
+    producto = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).get(producto_id=pk)
+
+    return render(request, 'reportes/barras_producto.html', {'products': p, 'cantidad': [float(producto['num'])], 'productos': [nombre.nombre], 'nombre': nombre.nombre })
 

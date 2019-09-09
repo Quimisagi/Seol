@@ -1,16 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .forms import Formulario_Registro_Producto, Formulario_Editar_Producto, Formulario_Registro_Subcategoria, Formulario_Registro_Categoria, Formulario_Editar_Categoria, Formulario_Editar_Subcategoria, Formulario_Registro_Descuento, Formulario_Editar_Descuento
 from .models import Categoria, Subcategoria, Producto, Descuento_Producto
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.views.generic import DeleteView
 from django.forms import modelformset_factory
 from django.core.exceptions import *
 
 #Productos--------------------------------------------------------------------
 
+@permission_required('productos.add_producto', login_url=None, raise_exception=True)
 def agregar_producto(request):
     if request.method == 'POST':
         form = Formulario_Registro_Producto(request.POST, request.FILES)
@@ -26,9 +27,11 @@ def agregar_producto(request):
         form = Formulario_Registro_Producto()
     return render(request, 'productos/registrar-producto.html', {'form': form})
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def menu_productos(request):
     return render(request, 'productos/menu-productos.html', {})
 
+@permission_required('productos.change_producto', login_url=None, raise_exception=True)
 def editar_producto(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
@@ -44,16 +47,20 @@ def editar_producto(request, pk):
 
     return render(request, 'productos/actualizar-producto.html', {'form': form, 'producto': producto})
 
+@permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def lista_producto(request):
     context = {
         'productos': Producto.objects.filter(estado=True),
     }
     return render(request, 'productos/lista-producto.html', context)
 
-class eliminar_producto(LoginRequiredMixin, DeleteView):
+
+class eliminar_producto(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Producto
     success_url = reverse_lazy('productos:lista_producto')
+    permission_required = 'productos.delete_producto'
 
+    
     def delete(self, request, *args, **kwargs):
         """
         Call the delete() method on the fetched object and then redirect to the
@@ -82,7 +89,7 @@ def detalle_producto(request, pk):
     except ObjectDoesNotExist:
         return render(request, 'productos/detalle_producto.html', {'producto': producto})
 
-
+@permission_required('productos.change_producto', login_url=None, raise_exception=True)
 def abastecer_producto(request, pk):
 
     producto = get_object_or_404(Producto, pk=pk)
@@ -95,10 +102,11 @@ def abastecer_producto(request, pk):
 
    
 #Categorias--------------------------------------------------------------------------------------------
-
+@permission_required('productos.view_categoria', login_url=None, raise_exception=True)
 def menu_categorias(request):
     return render(request, 'productos/menu-categorias.html', {})
 
+@permission_required('productos.add_categoria', login_url=None, raise_exception=True)
 def agregar_categoria(request):
     subcategoria_formset = modelformset_factory(Subcategoria, form=Formulario_Registro_Subcategoria, min_num=1,
      extra=0)
@@ -127,7 +135,7 @@ def agregar_categoria(request):
     return render(request, 'productos/registrar-categoria.html', {'form': form1, 'formset': formset})
 
 
-
+@permission_required('productos.view_categoria', login_url=None, raise_exception=True)
 def lista_categoria(request):
     context = {
         'categorias': Categoria.objects.filter(estado=True),
@@ -137,10 +145,11 @@ def lista_categoria(request):
 
 
 
-class eliminar_categoria(LoginRequiredMixin, DeleteView):
+class eliminar_categoria(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Categoria
     success_url = reverse_lazy('productos:lista_categoria')
-
+    permission_required = 'productos.delete_categoria'
+    
     def delete(self, request, *args, **kwargs):
         """
         Call the delete() method on the fetched object and then redirect to the
@@ -159,7 +168,7 @@ class eliminar_categoria(LoginRequiredMixin, DeleteView):
         return redirect(success_url)
         
 
-
+@permission_required('productos.change_categoria', login_url=None, raise_exception=True)
 def editar_categoria(request, pk):
 
     categoria = get_object_or_404(Categoria, pk=pk)
@@ -175,7 +184,7 @@ def editar_categoria(request, pk):
     return render(request, 'productos/actualizar-categoria.html', {'form': form, 'categoria': pk})
 
 #Subcategoria------------------------------------------------------------------------------------------------
-
+@permission_required('productos.view_subcategoria', login_url=None, raise_exception=True)
 def lista_subcategoria(request, pk):
     context = {
         'categoria': Categoria.objects.filter(id=pk).first(),
@@ -184,7 +193,7 @@ def lista_subcategoria(request, pk):
 
     return render(request, 'productos/lista-subcategoria.html', context)
 
-
+@permission_required('productos.change_subcategoria', login_url=None, raise_exception=True)
 def editar_subcategoria(request, pk):
 
     subcategoria = get_object_or_404(Subcategoria, pk=pk)
@@ -200,10 +209,12 @@ def editar_subcategoria(request, pk):
         form = Formulario_Editar_Subcategoria(instance=subcategoria)
     return render(request, 'productos/actualizar-subcategoria.html', {'form': form})
 
-class eliminar_subcategoria(LoginRequiredMixin, DeleteView):
+
+class eliminar_subcategoria(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 
     model = Subcategoria
-
+    permission_required = 'productos.delete_subcategoria'
+    
     def delete(self, request, *args, **kwargs):
         """
         Call the delete() method on the fetched object and then redirect to the
@@ -217,6 +228,7 @@ class eliminar_subcategoria(LoginRequiredMixin, DeleteView):
         messages.success(self.request, 'Subcategoria eliminada!')
         return redirect('productos:lista_subcategoria', categoria.id)
 
+@permission_required('productos.add_subcategoria', login_url=None, raise_exception=True)
 def agregar_subcategoria(request, pk):
 
     if request.method == 'POST':
@@ -238,26 +250,28 @@ def agregar_subcategoria(request, pk):
 
 
 #Descuentos---------------------------------------------------------------------------------------------------------------------
-
+@permission_required('productos.add_descuento_producto', login_url=None, raise_exception=True)
 def agregar_descuento(request, pk):
 
+    producto = get_object_or_404(Producto, pk=pk)
+
     if request.method == 'POST':
-
-        producto = get_object_or_404(Producto, pk=pk)
         
-        form = Formulario_Registro_Descuento(request.POST)
+        fecha1 = request.POST['reservation'].split('-')[0]
+        fecha2 = request.POST['reservation'].split('-')[1]
+        porcentaje = request.POST['porcentaje']
 
-        if form.is_valid():
+        fecha_inicio = fecha1.split('/')[0]+'-'+fecha1.split('/')[1]+'-'+fecha1.split('/')[2]
+        fecha_final = fecha2.split('/')[0]+'-'+fecha2.split('/')[1]+'-'+fecha2.split('/')[2]
 
-            a = form.save(commit=False)
-            a.producto = producto
-            a.save()
-            messages.success(request, 'Descuento agregado!')
-            return redirect('home:home')
-    else:
-        form = Formulario_Registro_Descuento()
-    return render(request, 'productos/registrar-descuento.html', {'form': form})    
+        a = Descuento_Producto(fecha_inicio=fecha_inicio, fecha_final=fecha_final, porcentaje=porcentaje, producto=producto)
+        a.save()
+        messages.success(request, 'Descuento agregado!')
+        return redirect('productos:lista_descuento')
+    
+    return render(request, 'productos/registrar-descuento.html', {'producto': producto})    
 
+@permission_required('productos.change_descuento_producto', login_url=None, raise_exception=True)
 def editar_descuento(request, pk):
 
     dscto = get_object_or_404(Descuento_Producto, pk=pk)
@@ -272,6 +286,7 @@ def editar_descuento(request, pk):
         form = Formulario_Editar_Descuento(instance=dscto)
     return render(request, 'productos/actualizar-descuento.html', {'form': form})
 
+@permission_required('productos.view_descuento_producto', login_url=None, raise_exception=True)
 def lista_descuento(request):
     context = {
         'descuentos': Descuento_Producto.objects.all(),
@@ -279,11 +294,10 @@ def lista_descuento(request):
 
     return render(request, 'productos/lista-descuento.html', context)
 
-
-class eliminar_descuento(LoginRequiredMixin, DeleteView):
-
+#@permission_required('productos.delete_descuento_producto', login_url=None, raise_exception=True)
+class eliminar_descuento(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'productos.delete_descuento_producto'
     model = Descuento_Producto
-
     success_url = reverse_lazy('productos:lista_descuento')
 
    
