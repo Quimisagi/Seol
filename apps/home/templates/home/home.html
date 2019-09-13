@@ -68,7 +68,10 @@
               <!--Category & Title-->
               
               <h4>
-                 <a href="{% url 'productos:detalle_producto' pr.producto.id %}" style="color: black">{{pr.producto.nombre}} - {{pr.producto.marca}}</a>
+                <strong>
+                  <a href="{% url 'productos:detalle_producto' pr.producto.id %}" style="color: black">{{pr.producto.nombre}} - {{pr.producto.marca}}</a>
+                </strong>
+                
               </h4>
                 
             </div>
@@ -101,7 +104,7 @@
             
             <h4>
               <strong>
-                <a href="{% url 'productos:detalle_producto' producto.id %}" class="dark-grey-text">{{producto.nombre}} - {{producto.marca}}</a>
+                <a href="{% url 'productos:detalle_producto' producto.id %}" style="color: black">{{producto.nombre}} - {{producto.marca}}</a>
               </strong>
             </h4>
               

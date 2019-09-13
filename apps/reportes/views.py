@@ -5,6 +5,8 @@ from apps.usuarios.models import *
 from django.db.models import Avg, Count, Min, Sum
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required
+from datetime import *; from dateutil.relativedelta import *
+import calendar
 
 @permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def menu(request):
@@ -116,7 +118,8 @@ def reporte_baja_existencia(request):
 
 @permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_cumpleanos(request):
-    mes = datetime.now().month
+    fecha = datetime.now()+relativedelta(months=+1)
+    mes = fecha.month
     usuarios = Usuario.objects.filter(fecha_nacimiento__month=mes)
 
     return render(request, 'reportes/cumpleanos.html', {'usuarios': usuarios})
@@ -125,7 +128,51 @@ def reporte_cumpleanos(request):
 def producto_ventas(request, pk):
     p = Producto.objects.all()
     nombre = Producto.objects.get(id=pk)
-    producto = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).get(producto_id=pk)
 
-    return render(request, 'reportes/barras_producto.html', {'products': p, 'cantidad': [float(producto['num'])], 'productos': [nombre.nombre], 'nombre': nombre.nombre })
+    mes1 = (datetime.now()+relativedelta(months=-1)).month
+    mes2 = (datetime.now()+relativedelta(months=-2)).month
+    mes3 = (datetime.now()+relativedelta(months=-3)).month
+    mes4 = (datetime.now()+relativedelta(months=-4)).month
+    mes5 = (datetime.now()+relativedelta(months=-5)).month
+    mes6 = (datetime.now()+relativedelta(months=-6)).month
 
+    producto_mes1 = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).filter(producto_id=pk, factura__fecha__month=mes1)
+    producto_mes2 = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).filter(producto_id=pk, factura__fecha__month=mes2) 
+    producto_mes3 = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).filter(producto_id=pk, factura__fecha__month=mes3)
+    producto_mes4 = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).filter(producto_id=pk, factura__fecha__month=mes4)
+    producto_mes5 = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).filter(producto_id=pk, factura__fecha__month=mes5)
+    producto_mes6 = Factura_Producto.objects.values('producto_id').annotate(num=Sum('subtotal')).filter(producto_id=pk, factura__fecha__month=mes6)
+
+    pr = [producto_mes1, producto_mes2, producto_mes3, producto_mes4, producto_mes5, producto_mes6]
+    valores = []
+    for m in pr:
+        if m:
+            for n in m:
+                valores.append(float(n['num']))
+        else:
+            valores.append(0)
+        
+            
+    
+    valores.reverse()
+    meses = [switch_mes(mes6), switch_mes(mes5), switch_mes(mes4), switch_mes(mes3), switch_mes(mes2), switch_mes(mes1)]
+
+    
+    return render(request, 'reportes/barras_producto.html', {'products': p, 'cantidad': valores, 'productos': meses, 'nombre': nombre.nombre })
+
+def switch_mes(argument):
+    switcher = {
+        1: "Enero",
+        2: "Febrero",
+        3: "Marzo",
+        4: "Abril",
+        5: "Mayo",
+        6: "Junio",
+        7: "Julio",
+        8: "Agosto",
+        9: "Septiembre",
+        10: "Octobre",
+        11: "Noviembre",
+        12: "Diciembre"
+    }
+    return switcher.get(argument, "Invalid month")

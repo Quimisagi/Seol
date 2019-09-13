@@ -4,27 +4,39 @@
 {% block content %}
 
         <div class="content-section">
-            <div class="media">
-                <img class="rounded-circle account-img" src="{{ user.perfil.imagen.url}}">
-                <div class="media-body">
-                    <h2 class="account-heading">{{user.nombres}}</h2>
-                    <p class="text-secondary">{{user.email}}</p>
-                </div>
-            </div>
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Perfil</legend>
+            </fieldset>
             <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Perfil</legend>
-                </fieldset>
-                {% bootstrap_form u_form %}
-                {% bootstrap_form p_form %}
-                <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Actualizar</button>
+                <div class="col-md-5">
+                    <div class="media">
+                        <div class="media-body">
+                            <h2 class="account-heading">{{user.nombres}} {{user.apellidos}}</h2>
+                            <p class="text-secondary">{{user.email}}</p>
+                        </div>
+                        <img class="rounded-circle account-img" src="{{ user.perfil.imagen.url}}">
+                    </div>
+                    
+                    {% csrf_token %}
+
+                    {% bootstrap_form p_form %}
                 </div>
-                {% if user.es_admin %}
-                {% else %}
-                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'usuarios:eliminar_usuario' user.id %}">Desactivar</a>
-                {% endif %}
+                <div class="col-md-1">
+                    <br>
+                    <img src="{% static 'img/linea2.png' %}">
+                </div>
+                <div class="col-md-6">
+                    {% bootstrap_form u_form %}
+                
+                    <div class="form-group">
+                        <button class="btn btn-success" type="submit">Actualizar</button>
+                    </div>
+                    {% if user.es_admin %}
+                    {% else %}
+                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'usuarios:eliminar_usuario' user.id %}">Desactivar</a>
+                    {% endif %}
+                </div>
+                
             </form>
             
         </div>

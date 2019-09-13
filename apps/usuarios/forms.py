@@ -23,13 +23,21 @@ class Formulario_Editar_Usuario(forms.ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ['nombres', 'email', 'apellidos', 'telefono', 'direccion', 'fecha_nacimiento']
+        fields = ['nombres', 'apellidos', 'email', 'telefono', 'direccion', 'fecha_nacimiento']
 
     def clean_fecha_nacimiento(self):
-            fecha = self.cleaned_data.get('fecha_nacimiento')
-            if fecha > date.today() :
-                raise forms.ValidationError("Digite una fecha antes de la actual")
-            return fecha
+        fechaNacimiento = self.cleaned_data.get('fecha_nacimiento')
+        if calculateAge(fechaNacimiento) < 18:
+            #si es menor de edad
+            raise forms.ValidationError("debes ser mayor de 18 años")
+        return fechaNacimiento
+
+
+def calculateAge(birthDate):
+    days_in_year = 365.2425
+    age = int((date.today() - birthDate).days / days_in_year)
+    return age
+
 
 class Formulario_Editar_Perfil(forms.ModelForm):
     class Meta:

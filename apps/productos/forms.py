@@ -32,6 +32,7 @@ class Formulario_Editar_Producto(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ['nombre', 'descripcion', 'precio_venta', 'marca', 'subcategoria', 'imagen', 'peso', 'color', 'garantia']
+        widgets = { 'descripcion': forms.Textarea(attrs={'rows': '2'}), 'imagen': forms.FileInput(attrs={'class': 'bootstrap4-multi-input'})}
 
 class Formulario_Editar_Categoria(forms.ModelForm):
     class Meta:

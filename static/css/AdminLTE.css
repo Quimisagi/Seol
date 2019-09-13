@@ -210,7 +210,7 @@ img {
   background-color: #39cccc !important;
 }
 .bg-olive {
-  background-color: #3d9970 !important;
+  background-color: #472561 !important;
 }
 .bg-lime {
   background-color: #01ff70 !important;
@@ -1253,7 +1253,7 @@ body > .header .logo .icon {
 .box {
   position: relative;
   background: #ffffff;
-  border-top: 2px solid #c1c1c1;
+  border-top: 2px solid #472561;
   margin-bottom: 20px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
