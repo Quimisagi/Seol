@@ -1,6 +1,7 @@
 from django import forms
 from .models import Producto, Subcategoria, Categoria, Descuento_Producto
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from datetime import date
 
 class Formulario_Registro_Producto(forms.ModelForm):
     class Meta:
@@ -48,3 +49,12 @@ class Formulario_Editar_Descuento(forms.ModelForm):
     class Meta:
         model = Descuento_Producto
         fields = ['fecha_inicio', 'fecha_final', 'porcentaje']
+
+    def clean(self):
+        fecha_inicio = self.cleaned_data.get('fecha_inicio')
+        fecha_final = self.cleaned_data.get('fecha_final')
+        
+        if fecha_inicio > fecha_final:
+            raise forms.ValidationError("Introduzca un rango de fechas valido")
+
+            

@@ -10,7 +10,7 @@ import calendar
 
 @permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def menu(request):
-    productos = Producto.objects.all()
+    productos = Producto.objects.filter(estado=True)
     return render(request, 'reportes/menu.html', {'products': productos})
 
 @permission_required('productos.view_producto', login_url=None, raise_exception=True)
@@ -36,7 +36,7 @@ def reporte_mas_vendidos(request):
 
 @permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_mas_compras(request):
-    facturas = Factura.objects.values('id_usuario').annotate(num=Sum('total')).order_by('-num')[:20]
+    facturas = Factura.objects.values('id_usuario').annotate(num=Sum('total')).filter(estado=True).order_by('-num')[:20]
 
     clientes = []
     cantidad = []
@@ -93,7 +93,7 @@ def reporte_ventas_por_rango(request):
         f2 = fecha_fin.split("/")[0]+"-"+fecha_fin.split("/")[1]+"-"+fecha_fin.split("/")[2]
         fecha_f = datetime.strptime(f2,"%Y-%m-%d").date()
 
-        producto = Factura.objects.filter(fecha__range=(fecha_i, fecha_f))
+        producto = Factura.objects.filter(fecha__range=(fecha_i, fecha_f), estado=True)
         total = 0
         for p in producto:
             total = total + p.total
@@ -103,8 +103,8 @@ def reporte_ventas_por_rango(request):
         return render(request, 'reportes/barras.html', {'cantidad': total2, 'productos': label})
         
     else:
-        producto = Factura.objects.aggregate(num=Sum('total'))
-        print(producto)
+        producto = Factura.objects.filter(estado=True).aggregate(num=Sum('total'))
+        
         total = [float(producto['num'])]
         label = ['Total ventas']
 
@@ -112,7 +112,7 @@ def reporte_ventas_por_rango(request):
 
 @permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def reporte_baja_existencia(request):
-    productos = Producto.objects.filter(cantidad_disponible__lt=10)
+    productos = Producto.objects.filter(cantidad_disponible__lt=10, estado=True)
 
     return render(request, 'reportes/baja_cantidad.html', {'productos': productos})
 
@@ -120,13 +120,13 @@ def reporte_baja_existencia(request):
 def reporte_cumpleanos(request):
     fecha = datetime.now()+relativedelta(months=+1)
     mes = fecha.month
-    usuarios = Usuario.objects.filter(fecha_nacimiento__month=mes)
+    usuarios = Usuario.objects.filter(fecha_nacimiento__month=mes, estado=True)
 
     return render(request, 'reportes/cumpleanos.html', {'usuarios': usuarios})
 
 @permission_required('productos.view_producto', login_url=None, raise_exception=True)
 def producto_ventas(request, pk):
-    p = Producto.objects.all()
+    p = Producto.objects.filter(estado=True)
     nombre = Producto.objects.get(id=pk)
 
     mes1 = (datetime.now()+relativedelta(months=-1)).month

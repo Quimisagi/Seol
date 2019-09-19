@@ -34,7 +34,7 @@ def agregar_carrito(request, pk, cn):
             if p.carrito == carro:
                 tiene = True
                 
-        print(tiene)
+        #print(tiene)
         if tiene == False:        
             
             if producto.descuento_producto:

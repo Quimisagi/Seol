@@ -11,7 +11,7 @@ class Carrito_Compras(models.Model):
 class Carrito_Compras_Producto(models.Model):
     carrito = models.ForeignKey(Carrito_Compras, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    cantidad = models.IntegerField(null=False)
+    cantidad = models.BigIntegerField(null=False)
     subtotal = models.DecimalField(decimal_places=1, max_digits=100)
 
 @receiver(post_save, sender=Usuario)

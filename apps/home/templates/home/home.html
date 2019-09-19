@@ -104,7 +104,11 @@
             
             <h4>
               <strong>
-                <a href="{% url 'productos:detalle_producto' producto.id %}" style="color: black">{{producto.nombre}} - {{producto.marca}}</a>
+                <a href="{% url 'productos:detalle_producto' producto.id %}" style="color: black">{{producto.nombre}} - {{producto.marca}}
+                  {% if producto.descuento_producto %}
+                  <small class="badge pull-right bg-yellow">- %</small>
+                  {% endif %}
+                </a>
               </strong>
             </h4>
               

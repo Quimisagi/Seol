@@ -4,7 +4,7 @@ from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-documentos=(('CC','cedula de ciudadania'),('TI','tarjeta de identidad'),('PA','pasaporte'),('CE','cedula de extranjeria'))
+documentos=(('CC','cedula de ciudadania'),('PA','pasaporte'),('CE','cedula de extranjeria'))
 
 class Usuario(AbstractUser):
     nombres = models.CharField(max_length=45, null=False)

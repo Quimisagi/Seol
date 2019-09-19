@@ -20,7 +20,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=50, null=False)
     descripcion = models.TextField()
     precio_venta = models.DecimalField(max_digits=9, decimal_places=1, null=False) 
-    cantidad_disponible = models.IntegerField(null=False)
+    cantidad_disponible = models.BigIntegerField(null=False)
     marca = models.CharField(max_length=50, null=False)
     estado = models.BooleanField(default = True)
     subcategoria = models.ForeignKey(Subcategoria, on_delete=models.SET_NULL, null=True)

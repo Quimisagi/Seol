@@ -5,7 +5,7 @@
 {% block content %}
 <form action="" method="POST">
     {% csrf_token %}
-   
+   <h2>Selecciona un producto</h2>
     <select name="producto" id="producto" class="form-control banco">
         {% for producto in products%}
             {% if producto.nombre == nombre %}
@@ -20,11 +20,6 @@
 <div class="box box-success">
     <div class="box-header with-border">
         <h3 class="box-title">VENTAS TOTALES POR PRODUCTO</h3>
-        <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-        </div>
     </div>
     <div class="box-body">
         <div class="chart">
@@ -32,6 +27,8 @@
         </div>
     </div>
 </div>
+<button class="btn btn-success" onclick="window.location.assign('{% url 'reportes:menu' %}')"><i class="fa fa-arrow-left"></i> Atrás</button>  
+
 {% endblock content %}
 {% block js %}
 <script>

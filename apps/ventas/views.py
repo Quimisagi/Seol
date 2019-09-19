@@ -61,6 +61,7 @@ def factura(request):
     
     
 def pago(request, pk):
+    """
     factura = Factura.objects.get(id=pk)
     factura.estado = True
     factura.save()
@@ -70,15 +71,23 @@ def pago(request, pk):
         p.producto.cantidad_disponible = p.producto.cantidad_disponible - p.cantidad 
         p.producto.save()
     productos.delete()
+    """
     return render(request, 'ventas/pago.html', {'factura': pk})
 
 def confirmar_pago(request):
     datos = request.POST
-    print(datos)
-    m = 0
+  
     factura = Factura.objects.filter(id=datos['factura']).first()
-    print(factura.total)
-    print(factura.estado)
+    factura.estado = True
+    factura.save()
+    carrito = request.user.carrito_compras.id
+    productos = Carrito_Compras_Producto.objects.filter(carrito=carrito)
+    for p in productos:
+        p.producto.cantidad_disponible = p.producto.cantidad_disponible - p.cantidad 
+        p.producto.save()
+    productos.delete()
+
+    m = 0
 
     if 'metodo_0' in datos:
         m = m + 1
@@ -92,15 +101,23 @@ def confirmar_pago(request):
         elif datos['metodo_0'] == 'Tarjeta Crédito':
             f = Factura_Pago(factura=factura, metodo_pago=datos['metodo_0'], valor=factura.total)
             f.save()
-            t = TarjetaC(numero=datos['numero_0'], fecha=datos['fecha_0'], franquicia=datos['franqui_0'], cvv=datos['cvv_0'], cuotas=datos['cuota_0'])
-            t.save()
-            t.factura_pago.add(f)
+            if TarjetaC.objects.filter(numero=datos['numero_0']).exists():
+                t = TarjetaC.objects.filter(numero=datos['numero_0']).first()
+                t.factura_pago.add(f)
+            else:
+                t = TarjetaC(numero=datos['numero_0'], fecha=datos['fecha_0'], franquicia=datos['franqui_0'], cvv=datos['cvv_0'], cuotas=datos['cuota_0'])
+                t.save()
+                t.factura_pago.add(f)
         elif datos['metodo_0'] == 'Tarjeta Débito':
             f = Factura_Pago(factura=factura, metodo_pago=datos['metodo_0'], valor=factura.total)
             f.save()
-            t = TarjetaD(numero=datos['numero_0'], fecha=datos['fecha_0'], banco=datos['banco_0'])
-            t.save()
-            t.factura_pago.add(f)
+            if TarjetaD.objects.filter(numero=datos['numero_0']).exists():
+                t = TarjetaD.objects.filter(numero=datos['numero_0']).first()
+                t.factura_pago.add(f)
+            else:
+                t = TarjetaD(numero=datos['numero_0'], fecha=datos['fecha_0'], banco=datos['banco_0'])
+                t.save()
+                t.factura_pago.add(f)
     elif m == 2:
         if datos['metodo_0'] == 'Efectivo' and datos['metodo_1'] == 'Efectivo':
             Factura_Pago(metodo_pago=datos['metodo_0'], valor=factura.total, factura=factura).save()
@@ -123,16 +140,24 @@ def confirmar_pago(request):
                 elif datos[metodo] == 'Tarjeta Crédito':
                     f = Factura_Pago(factura=factura, metodo_pago=datos[metodo], valor=valor)
                     f.save()
-                    t = TarjetaC(numero=datos[numero], fecha=datos[fecha], franquicia=datos[franquicia], cvv=datos[cvv], cuotas=datos[cuotas])
-                    t.save()
-                    t.factura_pago.add(f)
+                    if TarjetaC.objects.filter(numero=datos[numero]).exists():
+                        t = TarjetaC.objects.filter(numero=datos[numero]).first()
+                        t.factura_pago.add(f)
+                    else:    
+                        t = TarjetaC(numero=datos[numero], fecha=datos[fecha], franquicia=datos[franquicia], cvv=datos[cvv], cuotas=datos[cuotas])
+                        t.save()
+                        t.factura_pago.add(f)
 
                 elif datos[metodo] == 'Tarjeta Débito':
                     f = Factura_Pago(factura=factura, metodo_pago=datos[metodo], valor=valor)
                     f.save()
-                    t = TarjetaD(numero=datos[numero], fecha=datos[fecha], banco=datos[banco])
-                    t.save()
-                    t.factura_pago.add(f)   
+                    if TarjetaD.objects.filter(numero=datos[numero]).exists():
+                        t = TarjetaD.objects.filter(numero=datos[numero]).first()
+                        t.factura_pago.add(f)
+                    else:
+                        t = TarjetaD(numero=datos[numero], fecha=datos[fecha], banco=datos[banco])
+                        t.save()
+                        t.factura_pago.add(f)   
     elif m == 3:
         ultimo = 3
         if datos['metodo_0'] == 'Efectivo' and datos['metodo_1'] == 'Efectivo' and datos['metodo_2'] == 'Efectivo':
@@ -168,16 +193,24 @@ def confirmar_pago(request):
                 elif datos[metodo] == 'Tarjeta Crédito':
                     f = Factura_Pago(factura=factura, metodo_pago=datos[metodo], valor=valor)
                     f.save()
-                    t = TarjetaC(numero=datos[numero], fecha=datos[fecha], franquicia=datos[franquicia], cvv=datos[cvv], cuotas=datos[cuotas])
-                    t.save()
-                    t.factura_pago.add(f)
+                    if TarjetaC.objects.filter(numero=datos[numero]).exists():
+                        t = TarjetaC.objects.filter(numero=datos[numero]).first()
+                        t.factura_pago.add(f)
+                    else:    
+                        t = TarjetaC(numero=datos[numero], fecha=datos[fecha], franquicia=datos[franquicia], cvv=datos[cvv], cuotas=datos[cuotas])
+                        t.save()
+                        t.factura_pago.add(f)
 
                 elif datos[metodo] == 'Tarjeta Débito':
                     f = Factura_Pago(factura=factura, metodo_pago=datos[metodo], valor=valor)
                     f.save()
-                    t = TarjetaD(numero=datos[numero], fecha=datos[fecha], banco=datos[banco])
-                    t.save()
-                    t.factura_pago.add(f)
+                    if TarjetaD.objects.filter(numero=datos[numero]).exists():
+                        t = TarjetaD.objects.filter(numero=datos[numero]).first()
+                        t.factura_pago.add(f)
+                    else:
+                        t = TarjetaD(numero=datos[numero], fecha=datos[fecha], banco=datos[banco])
+                        t.save()
+                        t.factura_pago.add(f)
         else:
 
             metodo = 'metodo_'+str(ultimo) 
@@ -193,16 +226,24 @@ def confirmar_pago(request):
             if datos[metodo] == 'Tarjeta Débito':
                 f = Factura_Pago(factura=factura, metodo_pago=datos[metodo], valor=valor)
                 f.save()
-                t = TarjetaD(numero=datos[numero], fecha=datos[fecha], banco=datos[banco])
-                t.save()
-                t.factura_pago.add(f)
+                if TarjetaD.objects.filter(numero=datos[numero]).exists():
+                    t = TarjetaD.objects.filter(numero=datos[numero]).first()
+                    t.factura_pago.add(f)
+                else:
+                    t = TarjetaD(numero=datos[numero], fecha=datos[fecha], banco=datos[banco])
+                    t.save()
+                    t.factura_pago.add(f)
 
             elif datos[metodo] == 'Tarjeta Crédito': 
                 f = Factura_Pago(factura=factura, metodo_pago=datos[metodo], valor=valor)
                 f.save()
-                t = TarjetaC(numero=datos[numero], fecha=datos[fecha], franquicia=datos[franquicia], cvv=datos[cvv], cuotas=datos[cuotas])
-                t.save()
-                t.factura_pago.add(f)
+                if TarjetaC.objects.filter(numero=datos[numero]).exists():
+                    t = TarjetaC.objects.filter(numero=datos[numero]).first()
+                    t.factura_pago.add(f)
+                else:    
+                    t = TarjetaC(numero=datos[numero], fecha=datos[fecha], franquicia=datos[franquicia], cvv=datos[cvv], cuotas=datos[cuotas])
+                    t.save()
+                    t.factura_pago.add(f)
 
     pagos = Factura_Pago.objects.filter(factura=factura)
     tarjetasc = [] 
@@ -232,9 +273,9 @@ def confirmar_pago(request):
     messages.success(request, 'Compra realizada con exito!')
     return render(request, 'ventas/factura_final.html', context)
 
-def historial_compras(request):
-    usuario = request.user
-    facturas = Factura.objects.filter(id_usuario=usuario.id)
+def historial_compras(request, pk):
+    usuario = Usuario.objects.get(id=pk)
+    facturas = Factura.objects.filter(id_usuario=usuario.id, estado=True)
     iva = []
     total = 0
     for f in facturas:

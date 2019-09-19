@@ -31,7 +31,7 @@
                 {{factura.direccion_usuario}}<br>
                 {{factura.ciudad_usuario}}, Colombia<br>
                 {{factura.telefono_usuario}}<br>
-                Email: {{usuario.email}}
+                Email: {{user.email}}
             </address>
         </div><!-- /.col 
         <div class="col-sm-4 invoice-col">
@@ -86,7 +86,7 @@
             </p>
         </div>--><!-- /.col -->
         <div class="col-xs-6">
-            <p class="lead">{{factura.fecha}}</p>
+            <p class="lead">Resumen</p>
             <div class="table-responsive">
                 <table class="table">
                     <tbody><tr>
@@ -130,7 +130,7 @@
     <div class="row no-print">
         <div class="col-xs-12">
             <button class="btn btn-default pull-right" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
-            <button class="btn btn-success pull-right" onclick="window.location.assign('{% url 'ventas:historial_compras' %}')">Salir</button>  
+            <button class="btn btn-success pull-right" onclick="window.location.assign('{% url 'ventas:historial_compras' user.id %}')">Salir</button>  
         </div>
     </div>
 </section>

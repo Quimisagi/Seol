@@ -22,7 +22,7 @@ class Factura(models.Model):
 class Factura_Producto(models.Model):
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
-    cantidad = models.IntegerField()
+    cantidad = models.BigIntegerField()
     subtotal = models.DecimalField(decimal_places=1, max_digits=100, null=True)
 
 class Factura_Pago(models.Model):
@@ -33,13 +33,13 @@ class Factura_Pago(models.Model):
 
 class TarjetaD(models.Model):
     factura_pago = models.ManyToManyField(Factura_Pago)
-    numero = models.IntegerField()
+    numero = models.BigIntegerField()
     fecha = models.CharField(max_length=30)
     banco = models.CharField(max_length=30, choices=bancos, null=True)
 
 class TarjetaC(models.Model):
     factura_pago = models.ManyToManyField(Factura_Pago)
-    numero = models.IntegerField()
+    numero = models.BigIntegerField()
     fecha = models.CharField(max_length=30)
     franquicia = models.CharField(max_length=30, choices=franquicias)
     cvv = models.IntegerField()

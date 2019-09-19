@@ -31,7 +31,9 @@
                             <td>{{usuario.email}}</td>
                             <td>{{usuario.is_active}}</td>
                             {% if usuario.is_active %}
-                                <td><button class="btn btn-danger btn-sm " onclick="window.location.assign('{% url 'usuarios:eliminar_usuario' usuario.id %}')">Desactivar</button></td>
+                                <td><button class="btn btn-danger btn-sm " onclick="window.location.assign('{% url 'usuarios:eliminar_usuario' usuario.id %}')">Desactivar</button>
+                                    <button class="btn btn-warning btn-sm " onclick="window.location.assign('{% url 'ventas:historial_compras' usuario.id %}')">Ver compras</button>
+                                </td>
                             {% else %}
                                 <td><button class="btn btn-success btn-sm " onclick="window.location.assign('{% url 'usuarios:activar_usuario' usuario.id %}')">Activar</button></td>
                             {% endif %}
