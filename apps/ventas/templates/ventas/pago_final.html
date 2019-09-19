@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+
+{% for pago in pagos %}
+    <p>
+        {{pago.id}}
+        {{pago.metodo_pago}}
+        {{pago.valor}}
+    </p>
+{% endfor %}
+
+{% for tc in tarjetasc %}
+    {% for t in tc %}
+        <p>
+            {{t.id}}
+            {{t.numero}}
+            {{t.fecha}}
+            {{t.franquicia}}
+            {{t.cvv}}
+            {{t.cuotas}}
+        </p>
+    {% endfor %}
+{% endfor %}
+
+{% for td in tarjetasd %}
+    {% for t in td %}
+        <p>
+            {{t.id}}
+            {{t.numero}}
+            {{t.fecha}}
+            {{t.banco}}
+        </p>
+    {% endfor %}
+{% endfor %}
+
+
+{% endblock content %}

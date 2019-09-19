@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from .forms import Formulario_Editar_Perfil, Formulario_Editar_Usuario, Formulario_Registrar_Usuario
 from django.views.generic import DeleteView
@@ -61,4 +61,16 @@ class eliminar_usuario(LoginRequiredMixin, DeleteView):
         self.object.save()
         messages.success(self.request, 'Cuenta desabilitada!')
         return redirect(success_url)
-    
+
+@permission_required('usuarios.view_usuario', login_url=None, raise_exception=True)
+def listar_usuarios(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
+
+@permission_required('usuarios.add_usuario', login_url=None, raise_exception=True)
+def activar_usuario(request, pk):
+    usuario = Usuario.objects.get(id=pk)
+    usuario.is_active = True
+    usuario.save()
+    messages.success(request, 'Cuenta activada!')
+    return redirect('usuarios:listar_usuarios')

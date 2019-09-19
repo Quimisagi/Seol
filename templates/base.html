@@ -5,7 +5,8 @@
   <head>
     <head>
         <meta charset="UTF-8">
-        <title>Seol | Home</title>
+        <title>Seol</title>
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/s.png' %}">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- bootstrap 3.0.2 -->
         <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet" type="text/css">
@@ -39,10 +40,10 @@
   </head>
   <body class="skin-black">
     <header class="header">
-            <a href="{% url 'home:home' %}" class="logo">
-                <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                <!--<img src="static/img/logo.png" alt="" width="200" height="50" > -->
-                Seol
+            <a href="{% url 'home:home' %}" class="logo" style="background-color: black">
+                <!-- Add the class icon to your logo image or logo icon to add the margining width="200" height="50"-->
+                <!--<img src="static/img/logoFinal2.png" class="logo icon" > -->
+                Inicio
             </a>
             <nav class="navbar navbar-static-top" role="navigation">
                <!-- Sidebar toggle button-->
@@ -61,6 +62,7 @@
                     <span class="icon-bar"></span>
                 </a>
                {% endif %}
+               
                <div class="navbar-right">
                    <ul class="nav navbar-nav">
                        
@@ -88,9 +90,9 @@
            <!-- Left side column. contains the logo and sidebar -->
            {% if user.is_authenticated %}
             {% if user.es_admin == False%}
-                <aside class="left-side sidebar-offcanvas">
+                <aside class="left-side sidebar-offcanvas" style="background-image: url('{% static 'img/gu1.jpg'%}')">
                     <!-- sidebar: style can be found in sidebar.less -->
-                    <section class="sidebar">
+                    <section class="sidebar" style="border-bottom-color: transparent">
                         <!-- Sidebar user panel -->
                         <div class="user-panel">
                             <div class="pull-left image">
@@ -107,27 +109,27 @@
                         <!-- /.search form -->
                         <!-- sidebar menu: : style can be found in sidebar.less -->
                         <ul class="sidebar-menu">
-                            <li class="active">
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'usuarios:perfil' %}">
                                     <i class="fa fa-user"></i>Perfil<span></span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
+                            <li style="border-top-color: transparent">
+                                <a href="{% url 'ventas:historial_compras' user.id %}">
                                     <i class="fa fa-list-alt"></i> <span>Historial de compras</span>
                                 </a>
                             </li>
-                            <li>
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'carrito:carrito' %}">
                                     <i class="fa fa-shopping-cart"></i> <span>Carrito de compras</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
+                            <li style="border-top-color: transparent">
+                                <a href="{% url 'home:descuentos' %}">
                                     <i class="fa fa-tags"></i> <span>Articulos en descuento</span>
                                 </a>
                             </li>
-                            <li>
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'home:logout' %}">
                                     <i class="fa  fa-power-off"></i> <span>Cerrar sesión</span>
                                 </a>
@@ -137,9 +139,9 @@
                     <!-- /.sidebar -->
                 </aside>
             {% else %}
-                <aside class="left-side sidebar-offcanvas">
+                <aside class="left-side sidebar-offcanvas" style="background-image: url('{% static 'img/gu1.jpg'%}')">
                     <!-- sidebar: style can be found in sidebar.less -->
-                    <section class="sidebar">
+                    <section class="sidebar" style="border-bottom-color: transparent">
                         <!-- Sidebar user panel -->
                         <div class="user-panel">
                             <div class="pull-left image">
@@ -156,32 +158,37 @@
                         <!-- /.search form -->
                         <!-- sidebar menu: : style can be found in sidebar.less -->
                         <ul class="sidebar-menu">
-                            <li class="active">
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'usuarios:perfil' %}">
                                     <i class="fa fa-user"></i>Perfil<span></span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
+                            <li style="border-top-color: transparent">
+                                <a href="{% url 'usuarios:listar_usuarios'%}">
                                     <i class="fa fa-users"></i> <span>Usuarios registrados</span>
                                 </a>
                             </li>
-                            <li>
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'productos:menu_categoria'%}">
                                     <i class="fa fa-folder"></i> <span>Categorias y Subcategorias</span>
                                 </a>
                             </li>
-                            <li>
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'productos:menu_producto'%}">
                                     <i class="fa fa-barcode"></i> <span>Productos</span>
                                 </a>
                             </li>
-                            <li>
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'productos:lista_descuento'%}">
                                     <i class="fa fa-tags"></i> <span>Descuentos</span> 
                                 </a>
                             </li>
-                            <li>
+                            <li style="border-top-color: transparent">
+                                <a href="{% url 'reportes:menu'%}">
+                                    <i class="fa fa-bar-chart-o"></i> <span>Reportes</span> 
+                                </a>
+                            </li>
+                            <li style="border-top-color: transparent">
                                 <a href="{% url 'home:logout' %}">
                                     <i class="fa  fa-power-off"></i> <span>Cerrar sesión</span>
                                 </a>
@@ -252,10 +259,14 @@
  <script src="{% static 'js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}" type="text/javascript"></script>
  <!-- iCheck -->
  <script src="{% static 'js/plugins/iCheck/icheck.min.js' %}" type="text/javascript"></script>
-
+ <!-- Chart js -->
+ <script src="{% static 'js/plugins/chart.js/Chart.js' %}" type="text/javascript"></script>
  <!-- AdminLTE App -->
  <script src="{% static 'js/AdminLTE/app.js' %}" type="text/javascript"></script>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+ <script src="{% static 'js/plugins/input-mask/jquery.inputmask.js'%}" type="text/javascript"></script>
+<script src="{% static 'js/plugins/input-mask/jquery.inputmask.date.extensions.js'%}" type="text/javascript"></script>
+<script src="{% static 'js/plugins/input-mask/jquery.inputmask.extensions.js'%}" type="text/javascript"></script>
 
 {% block js %}
        

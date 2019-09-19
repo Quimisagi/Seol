@@ -17,7 +17,7 @@
                         <div class="col-xs-3">
                             
                             <h3>Producto : {{carritops.producto.nombre}}</h3> <br>
-                            <h3>Cantidad : <button class="btn bg-red btn-sm" onclick="window.location.assign('{% url 'carrito:actualizar_carrito' carritops.producto.id 2 %}')"><i class="fa fa-minus"></i></button>   {{carritops.cantidad}}   <button class="btn bg-green btn-sm" onclick="window.location.assign('{% url 'carrito:actualizar_carrito' carritops.producto.id 1 %}')"><i class="fa fa-plus"></i></button></h3> <br>
+                            <h3>Cantidad : <br><button class="btn bg-red btn-sm" onclick="window.location.assign('{% url 'carrito:actualizar_carrito' carritops.producto.id 2 %}')"><i class="fa fa-minus"></i></button>   {{carritops.cantidad}}   <button class="btn bg-green btn-sm" onclick="window.location.assign('{% url 'carrito:actualizar_carrito' carritops.producto.id 1 %}')"><i class="fa fa-plus"></i></button></h3> <br>
                             <h3>Subtotal : {{carritops.subtotal}}</h3>
                             <button class="btn btn-danger btn-sm" onclick="window.location.assign('{% url 'carrito:eliminar_carrito' carritops.producto.id %}')">Eliminar</button>
                         </div>
@@ -38,7 +38,12 @@
                         Subtotal: {{total}} <br>
                         IVA 19%: {{iva}} <br>
                         <hr>
-                        Total: {{totaliva}}
+                        Total: {{totaliva}} <br> <br>
+                        {% if carritop %}
+                        <button class="btn btn-success btn-sm" onclick="window.location.assign('{% url 'ventas:factura' %}')">Comprar</button>
+                        {% else %}
+                        <button class="btn btn-success btn-sm" onclick="window.location.assign('{% url 'ventas:factura' %}')" disabled>Comprar</button>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Carrito_Compras, Carrito_Compras_Producto
 from django.contrib import messages
 from apps.productos.models import Producto
+from django.contrib.auth.decorators import login_required
 
 def carrito(request):
     carrito = request.user.carrito_compras.id
@@ -21,6 +22,7 @@ def carrito(request):
 
     return render(request, 'carrito/carrito-compras.html', context)
 
+@login_required
 def agregar_carrito(request, pk, cn):
     producto = get_object_or_404(Producto, pk=pk)
     carro = get_object_or_404(Carrito_Compras, id=request.user.carrito_compras.id)
@@ -32,7 +34,7 @@ def agregar_carrito(request, pk, cn):
             if p.carrito == carro:
                 tiene = True
                 
-        print(tiene)
+        #print(tiene)
         if tiene == False:        
             
             if producto.descuento_producto:
@@ -104,24 +106,27 @@ def actualizar_carrito(request, pk, accion):
     carrop = Carrito_Compras_Producto.objects.filter(producto=producto, carrito=carro).first()
 
     if accion == 1:
-        carrop.cantidad = carrop.cantidad + 1
-        carrop.save()
-        try:
-            if producto.descuento_producto:
-                subtotal = producto.precio_venta * carrop.cantidad
-                subtotal_dscto = subtotal - (producto.descuento_producto.porcentaje * subtotal)
-                carrop.subtotal = subtotal_dscto
-                carrop.save()
-            else:
+        if carrop.cantidad + 1 <= producto.cantidad_disponible:
+            carrop.cantidad = carrop.cantidad + 1
+            carrop.save()
+            try:
+                if producto.descuento_producto:
+                    subtotal = producto.precio_venta * carrop.cantidad
+                    subtotal_dscto = subtotal - (producto.descuento_producto.porcentaje * subtotal)
+                    carrop.subtotal = subtotal_dscto
+                    carrop.save()
+                else:
+                    subtotal = producto.precio_venta * carrop.cantidad 
+                    carrop.subtotal = subtotal
+                    carrop.save()
+            except:
                 subtotal = producto.precio_venta * carrop.cantidad 
                 carrop.subtotal = subtotal
                 carrop.save()
-        except:
-            subtotal = producto.precio_venta * carrop.cantidad 
-            carrop.subtotal = subtotal
-            carrop.save()
 
-        return redirect('carrito:carrito')
+            return redirect('carrito:carrito')
+        else:
+            return redirect('carrito:carrito')
     else:
         if carrop.cantidad > 1:
             carrop.cantidad = carrop.cantidad - 1

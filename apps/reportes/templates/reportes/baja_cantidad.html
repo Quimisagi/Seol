@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Productos con baja cantidad</h3>
+                <!--<div class="box-tools">
+                    <div class="input-group">
+                        <input type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search"/>
+                        <div class="input-group-btn">
+                            <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>-->
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Cantidad</th>
+                        <th>Opciones</th>
+                    </tr>
+                    {% for producto in productos%}
+                        <tr>
+                            <td><h4>{{producto.id}}</h4></td>
+                            <td><h4>{{producto.nombre}}</h4></td>
+                            <td><h4>{{producto.marca}}</h4></td>
+                            <td><h4>{{producto.cantidad_disponible}}</h4></td>
+                            <td>
+                                <form action="{% url 'productos:abastecer_producto' producto.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="input-group margin">
+                                        <div class="row">
+                                            <div class="col-xs-3"><input type="text" class="form-control input-sm" name="cantidad"></div>
+                                            
+                                            <button type="submit" class="btn btn-success btn-sm">Abastecer</button>
+                                        </div>
+                                        
+                                    </div>
+                                </form>
+                                <!--<button class="btn btn-success btn-sm" onclick="window.location.assign('{% url 'productos:abastecer_producto' producto.id %}')">Abastecer</button> -->   
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div><!-- /.box-body -->
+        </div><!-- <div class="input-group-btn">
+                <button type="button" class="btn btn-danger btn-sm">Action</button>
+            </div> /.box -->
+    </div>
+</div>
+<button class="btn btn-success" onclick="window.location.assign('{% url 'reportes:menu' %}')"><i class="fa fa-arrow-left"></i> Atrás</button>
+{% endblock content %}

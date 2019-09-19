@@ -1,26 +1,46 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
+{% load static %}
 {% block content %}
 
         <div class="content-section">
-            <div class="media">
-                <img class="rounded-circle account-img" src="{{ producto.imagen.url}}">
-                <div class="media-body">
-                    <h2 class="account-heading">{{producto.nombre}}</h2>
-                    <p class="text-secondary">{{producto.marca}}</p>
-            </div>
-            </div>
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Información del producto</legend>
+            </fieldset>
             <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Información del producto</legend>
-                </fieldset>
-                {% bootstrap_form form %}
-                <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Actualizar</button>
+                <div class="col-md-5">
+                    <div class="media">
+                        <div class="media-body">
+                            <h2 class="account-heading">{{producto.nombre}}</h2>
+                            <p class="text-secondary">{{producto.marca}}</p>
+                        </div>
+                        <img class="rounded-circle account-img" src="{{ producto.imagen.url}}">
+                    </div>
+                    
+                    {% csrf_token %}
+                    
+                    {% bootstrap_field form.imagen %}
                 </div>
-            </form>
-            
+                <div class="col-md-1">
+                    <br>
+                    <img src="{% static 'img/linea.png' %}">
+                </div>
+                <div class="col-md-6">
+                    {% bootstrap_field form.nombre %}
+                    {% bootstrap_field form.descripcion %}
+                    {% bootstrap_field form.precio_venta %}
+                    {% bootstrap_field form.marca %}
+                    {% bootstrap_field form.subcategoria %}
+                    {% bootstrap_field form.peso %}
+                    {% bootstrap_field form.color %}
+                    {% bootstrap_field form.garantia %}
+
+                    <button class="btn btn-success" type="submit">Actualizar</button>
+                </div>
+                <div class="form-group">
+                    
+                </div>
+            </form>  
         </div>
 
     

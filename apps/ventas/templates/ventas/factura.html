@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<section class="content invoice">                    
+    <!-- title row -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                <i class="fa fa-music"></i> Seol 
+                <small class="pull-right">{{factura.fecha}}</small>
+            </h2>                            
+        </div><!-- /.col -->
+    </div>
+    <!-- info row -->
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            Vendedor
+            <address>
+                <strong>Seol</strong><br>
+                cra 100 calle 13<br>
+                Cali, Colombia<br>
+                4493995<br>
+                Email: seol@seol.com
+            </address>
+        </div><!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+            Cliente
+            <address>
+                <strong>{{factura.nombre_usuario}} {{factura.apellido_usuario}}</strong><br>
+                {{factura.direccion_usuario}}<br>
+                {{factura.ciudad_usuario}}, Colombia<br>
+                {{factura.telefono_usuario}}<br>
+                Email: {{usuario.email}}
+            </address>
+        </div><!-- /.col 
+        <div class="col-sm-4 invoice-col">
+            <b>Invoice #007612</b><br>
+            <br>
+            <b>Order ID:</b> 4F3S8J<br>
+            <b>Payment Due:</b> 2/22/2014<br>
+            <b>Account:</b> 968-34567
+        </div>--><!-- /.col -->
+    </div><!-- /.row -->
+
+    <!-- Table row -->
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Descuento</th>
+                        <th>Subtotal</th>
+                    </tr>                                    
+                </thead>
+                <tbody>
+                    {% for p in carritop %}
+                    <tr>
+                        <td>{{p.producto.nombre}}</td>
+                        <td>{{p.cantidad}}</td>
+                        {% if p.producto.descuento_producto%}
+                            <td>{{p.producto.descuento_producto.porcentaje}}</td>
+                        {% else %}
+                            <td>Ninguno</td>
+                        {% endif %}
+                        <td>{{p.subtotal}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>                            
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+
+    <div class="row">
+        <!-- accepted payments column 
+        <div class="col-xs-6">
+            <p class="lead">Payment Methods:</p>
+            <img src="../../img/credit/visa.png" alt="Visa">
+            <img src="../../img/credit/mastercard.png" alt="Mastercard">
+            <img src="../../img/credit/american-express.png" alt="American Express">
+            <img src="../../img/credit/paypal2.png" alt="Paypal">
+            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+            </p>
+        </div>--><!-- /.col -->
+        <div class="col-xs-6">
+            <p class="lead">Resumen</p>
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody><tr>
+                        <th style="width:50%">Subtotal:</th>
+                        <td>{{total}}</td>
+                    </tr>
+                    <tr>
+                        <th>IVA 19%:</th>
+                        <td>{{iva}}</td>
+                    </tr>
+                    <tr>
+                        <th>Envío:</th>
+                        <td>{{envio}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total:</th>
+                        <td>{{factura.total}}</td>
+                    </tr>
+                </tbody></table>
+            </div>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+
+    <!-- this row will not appear when printing -->
+    <div class="row no-print">
+        <div class="col-xs-12">
+            <button class="btn btn-success" onclick="window.location.assign('{% url 'ventas:pago' factura.id %}')"><i class="fa fa-credit-card"></i> Confirmar Pago</button>  
+            <button class="btn btn-danger" onclick="window.location.assign('{% url 'carrito:carrito' %}')"><i class="fa fa-times"></i> Cancelar</button>
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %}

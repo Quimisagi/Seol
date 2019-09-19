@@ -23,6 +23,8 @@ urlpatterns = [
     path('descuento/lista/', views.lista_descuento, name='lista_descuento'),
     path('descuento/<int:pk>/eliminar/', views.eliminar_descuento.as_view(), name='eliminar_descuento'),
     path('<int:pk>/detalle/', views.detalle_producto, name='detalle_producto'),
+    path('<int:pk>/abastecer/', views.abastecer_producto, name='abastecer_producto'),
+
 
     
 ]

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+    <div class="error-page">
+        <h2 class="headline">403</h2>
+        <div class="error-content">
+            <h2><i class="fa fa-warning text-yellow"></i> Oops! Permiso denegado</h2>
+            <p>
+                Debes ser administrador de la pagina para acceder a esta vista 
+            </p>
+        </div>
+    </div>
+{% endblock content %}

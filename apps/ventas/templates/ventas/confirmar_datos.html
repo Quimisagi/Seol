@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+    <div class="form-box", style="width: 80%!important;margin: 15px auto 0 auto!important ">
+        <div class="header">
+            <h3 class="text-center">Confirmar datos</h3></div>
+        <form method="POST" id="contenedor">
+                {% csrf_token %}
+                <div class="body bg-gray">
+                    {% bootstrap_form form %}
+                </div>
+                <div class="footer">                    
+                    <button type="submit" class="btn bg-olive btn-block" id="boton">Confirmar</button>
+                </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById("id_nombres").value = '{{usuario.nombres}}';  
+        document.getElementById("id_apellidos").value = '{{usuario.apellidos}}';
+        if('{{usuario.direccion}}' == 'None'){
+            document.getElementById("id_direccion").value = '';
+        }
+        else{
+            document.getElementById("id_direccion").value = '{{usuario.direccion}}';
+        }
+        document.getElementById("id_telefono").type = 'number';
+        document.getElementById("id_telefono").value = '{{usuario.telefono}}';
+        document.getElementById("id_ciudad").value = 'Cali';
+        //document.getElementById("id_sede").disabled = false;
+        document.getElementById("boton").addEventListener('click',
+            validar
+        );
+        function validar(){
+            var bandera = true
+            if(document.getElementById("id_telefono").value == ''){
+                bandera = false;
+                document.getElementById("id_telefono").parentNode.className += " has-error";
+                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Digite un telefono</label>').appendTo(document.getElementById("id_telefono").parentNode)
+            }
+            if(document.getElementById("id_direccion").value == ''){
+                bandera = false;
+                document.getElementById("id_direccion").parentNode.className += " has-error";
+                $('<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Digite una dirección</label>').appendTo(document.getElementById("id_direccion").parentNode)
+            }
+            if(bandera){
+                $('#contenedor').submit()
+            }
+        };
+    </script>
+    
+    
+{% endblock content %}
